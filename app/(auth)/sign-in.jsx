@@ -81,10 +81,7 @@ const SignIn = () => {
             <Text className="text-lg text-gray-100 font-pregular">
               Having issues?
             </Text>
-            <Link
-              href="/sign-up"
-              className="text-lg font-psemibold text-secondary"
-            >
+            <Link href="/" className="text-lg font-psemibold text-secondary">
               Contact Admin
             </Link>
           </View>

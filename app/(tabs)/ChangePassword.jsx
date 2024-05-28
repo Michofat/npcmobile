@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { newRequest } from "../../utils/newRequest";
 import { useUserInfo } from "../../hooks/useUserInfo";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { showAlert } from "../../utils/showalert";
+import { FontAwesome } from "@expo/vector-icons";
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -19,7 +20,6 @@ const ChangePassword = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useUserInfo();
-  const router = useRouter();
 
   const changepass = async () => {
     setIsLoading(true);
@@ -123,7 +123,11 @@ const ChangePassword = () => {
         onPress={changepass}
       >
         <Text style={styles.buttonText}>
-          {isLoading ? <ActivityIndicator /> : "SUBMIT"}
+          {isLoading ? (
+            <ActivityIndicator size="large" color="yellow" />
+          ) : (
+            "SUBMIT"
+          )}
         </Text>
       </TouchableOpacity>
     </View>
@@ -134,6 +138,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
+    margin: 15,
+  },
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 40,
   },
   input: {
     marginBottom: 30,

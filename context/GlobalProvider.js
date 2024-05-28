@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { newRequest } from "../utils/newRequest";
 import axios from "axios";
+import { router } from "expo-router";
 
 export const GlobalContext = createContext();
 
@@ -104,6 +105,7 @@ export const GlobalProvider = ({ children }) => {
         cancelable: true,
       });
       setLoading(false);
+      router.push("/home");
     } catch (error) {
       Alert.alert(
         "Error!!!",
@@ -145,6 +147,7 @@ export const GlobalProvider = ({ children }) => {
       Alert.alert("Success!", response.data, [{ text: "Okay" }], {
         cancelable: true,
       });
+      router.push("/home");
     } catch (error) {
       Alert.alert(
         "Error!!!",
@@ -181,6 +184,7 @@ export const GlobalProvider = ({ children }) => {
       Alert.alert("Success!", response.data, [{ text: "Okay" }], {
         cancelable: true,
       });
+      router.push("/home");
     } catch (error) {
       Alert.alert(
         "Error!!!",
@@ -264,6 +268,7 @@ export const GlobalProvider = ({ children }) => {
       Alert.alert("Success!", response.data, [{ text: "Okay" }], {
         cancelable: true,
       });
+      router.push("/home");
     } catch (error) {
       // console.error("Error updating next-of-kin:", error);
       Alert.alert(
@@ -277,17 +282,221 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    setLoading(true);
+  const updatespouse = async (
+    spousename,
+    spousefon,
+    spouseoffice,
+    spouseoccup
+  ) => {
     try {
-      await AsyncStorage.removeItem("userInfo");
-      setUserInfo(null);
-      setIsLogged(false);
+      setLoading(true);
+
+      const id = userInfo[0]?.id;
+      const response = await newRequest.put(`/updatespouse/${id}`, {
+        spousename,
+        spousefon,
+        spouseoffice,
+        spouseoccup,
+      });
+
+      await updateDataInAsyncStorage(id);
+
+      Alert.alert(
+        "Success!",
+        response.data,
+        [
+          {
+            text: "Okay",
+          },
+        ],
+        { cancelable: true }
+      );
+      router.push("/home");
     } catch (error) {
-      Alert.alert("Error!!!", error.message || "Error during logout", [
-        { text: "Okay" },
-      ]);
-      console.error("Error during logout", error);
+      Alert.alert(
+        "Error!!!",
+        error.message,
+        [
+          {
+            text: "Failed, please try again",
+            onPress: () => setLoading(false),
+          },
+        ],
+        { cancelable: true }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const processDeptRank = async (
+    station,
+    postinglg,
+    dept,
+    rank,
+    cadre,
+    gradel,
+    stepp
+  ) => {
+    setLoading(true);
+
+    try {
+      const id = userInfo[0].id;
+      const updateResponse = await newRequest.put(`/updatedeptrank/${id}`, {
+        id,
+        station,
+        postinglg,
+        dept,
+        rank,
+        cadre,
+        gradel,
+        stepp,
+      });
+
+      await updateDataInAsyncStorage(id);
+
+      Alert.alert("Success!", updateResponse.data, [{ text: "OK" }]);
+      router.push("/home");
+    } catch (error) {
+      console.error("Edit error:", error);
+
+      // Show error alert
+      Alert.alert(
+        "Error!!!",
+        "Failed, please try again",
+        [{ text: "OK", onPress: () => setLoading(false) }],
+        { cancelable: true }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatebnkpfa = async (bnk, accno, pfaname, pfapin) => {
+    setLoading(true);
+
+    try {
+      const id = userInfo[0].id;
+      const response = await newRequest.put(`/updatebnkpfa/${id}`, {
+        bnk,
+        accno,
+        pfaname,
+        pfapin,
+      });
+
+      await updateDataInAsyncStorage(id);
+
+      Alert.alert("Success!", response.data, [{ text: "Okay" }], {
+        cancelable: true,
+      });
+      router.push("/home");
+    } catch (error) {
+      Alert.alert(
+        "Error!!!",
+        error.message || "Failed, please try again",
+        [{ text: "Okay", onPress: () => setLoading(false) }],
+        { cancelable: true }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const processupload = async (selectedImage) => {
+    const id = userInfo[0]?.id;
+    if (!id) {
+      alert("User ID not found");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const imageUrl = await generateImageLink(selectedImage);
+      const response = await newRequest.put(`/uploadpassport/${id}`, {
+        imageUrl,
+      });
+
+      await updateDataInAsyncStorage(id);
+
+      alert(response?.data || "Upload successful");
+      router.push("/home");
+    } catch (error) {
+      alert(error.message || "Failed to upload image, please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uploadsig = async (selectedImage) => {
+    const id = userInfo[0]?.id;
+    if (!id) {
+      alert("User ID not found");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const imageUrl = await generateImageLink(selectedImage);
+      const response = await newRequest.put(`/uploadsignature/${id}`, {
+        imageUrl,
+      });
+
+      await updateDataInAsyncStorage(id);
+
+      alert(response?.data || "Upload successful");
+      router.push("/home");
+    } catch (error) {
+      alert("Failed to upload signature. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uploadpassportnok = async (selectedImage) => {
+    if (!userInfo || !userInfo[0] || !userInfo[0].id) {
+      alert("User information is not available.");
+      return;
+    }
+
+    const id = userInfo[0].id;
+    setLoading(true);
+
+    try {
+      const imageUrl = await generateImageLink(selectedImage);
+      const response = await newRequest.put(`/uploadpassportnok/${id}`, {
+        imageUrl,
+      });
+      await updateDataInAsyncStorage(id);
+      alert(response?.data);
+      router.push("/home");
+    } catch (error) {
+      alert("An error occurred while uploading the passport.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uploadsignaturenok = async (selectedImage) => {
+    if (!userInfo || !userInfo[0] || !userInfo[0].id) {
+      alert("User information is not available.");
+      return;
+    }
+
+    const id = userInfo[0].id;
+    setLoading(true);
+
+    try {
+      const imageUrl = await generateImageLink(selectedImage);
+      const response = await newRequest.put(`/uploadsignaturenok/${id}`, {
+        imageUrl,
+      });
+      await updateDataInAsyncStorage(id);
+      alert(response?.data);
+      router.push("/home");
+    } catch (error) {
+      alert("An error occurred while uploading the signature.");
     } finally {
       setLoading(false);
     }
@@ -306,7 +515,16 @@ export const GlobalProvider = ({ children }) => {
       updatequal,
       uploadCertificate,
       updatenok,
-      logout,
+      updatespouse,
+      processDeptRank,
+      updatebnkpfa,
+      processupload,
+      uploadsig,
+      uploadpassportnok,
+      uploadsignaturenok,
+      setIsLogged,
+      setUserInfo,
+      setLoading,
     }),
     [login, loading, isLogged, userInfo]
   );

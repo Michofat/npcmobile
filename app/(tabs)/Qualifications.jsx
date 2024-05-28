@@ -123,9 +123,12 @@ const Qualifications = () => {
             }}
             disabled={acadsecondary && proff ? false : true}
           >
-            SUBMIT
+            {loading ? (
+              <ActivityIndicator size="large" color="yellow" />
+            ) : (
+              "SUBMIT"
+            )}
           </Text>
-          {loading && <ActivityIndicator size="large" color="yellow" />}
         </TouchableOpacity>
       </View>
     </ScrollView>

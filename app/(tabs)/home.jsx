@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useUserInfo } from "../../hooks/useUserInfo";
 import CardItem from "../../components/CardItem";
+import { router } from "expo-router";
 
 const Home = () => {
   const {
@@ -24,18 +25,68 @@ const Home = () => {
   } = useUserInfo();
 
   const cardDetails = [
-    { id: 12, title: "Change Password", condition: compchpass },
-    { id: 1, title: "Personal", condition: comppersonal },
-    { id: 2, title: "Office", condition: compoffice },
-    { id: 3, title: "Qualifications", condition: compqual },
-    { id: 4, title: "Certificates", condition: compcert },
-    { id: 5, title: "Next-of-Kin Primary", condition: compnok },
-    { id: 6, title: "Spouse", condition: compspouse },
-    { id: 7, title: "Bank & Pension", condition: compbnkpfa },
-    { id: 8, title: "Profile Picture Upload", condition: compmypass },
-    { id: 9, title: "My Signature", condition: compmysign },
-    { id: 10, title: "NoK Passport", condition: compnokpass },
-    { id: 11, title: "NoK Signature", condition: compnoksign },
+    {
+      id: 12,
+      title: "Change Password",
+      condition: compchpass,
+      href: "ChangePassword",
+    },
+    {
+      id: 1,
+      title: "Personal",
+      condition: comppersonal,
+      href: "BioData",
+    },
+    { id: 2, title: "Office", condition: compoffice, href: "DeptRank" },
+    {
+      id: 3,
+      title: "Qualifications",
+      condition: compqual,
+      href: "Qualifications",
+    },
+    {
+      id: 4,
+      title: "Certificates",
+      condition: compcert,
+      href: "Certificates",
+    },
+    {
+      id: 5,
+      title: "Next-of-Kin",
+      condition: compnok,
+      href: "Nok",
+    },
+    { id: 6, title: "Spouse", condition: compspouse, href: "Spouse" },
+    {
+      id: 7,
+      title: "Bank & Pension",
+      condition: compbnkpfa,
+      href: "BankPen",
+    },
+    {
+      id: 8,
+      title: "Profile Picture Upload",
+      condition: compmypass,
+      href: "UpdatePassport",
+    },
+    {
+      id: 9,
+      title: "My Signature",
+      condition: compmysign,
+      href: "UploadSignature",
+    },
+    {
+      id: 10,
+      title: "NoK Passport",
+      condition: compnokpass,
+      href: "NokPassport",
+    },
+    {
+      id: 11,
+      title: "NoK Signature",
+      condition: compnoksign,
+      href: "NokSignature",
+    },
   ];
 
   return (
@@ -57,8 +108,13 @@ const Home = () => {
           </Text>
         </View>
         <View style={styles.cardsContainer}>
-          {cardDetails.map(({ id, title, condition }) => (
-            <CardItem key={id} title={title} condition={condition} />
+          {cardDetails.map(({ id, title, condition, href }) => (
+            <CardItem
+              key={id}
+              title={title}
+              condition={condition}
+              handlePress={() => router.push(`${href}`)}
+            />
           ))}
         </View>
       </ScrollView>

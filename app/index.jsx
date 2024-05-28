@@ -11,7 +11,7 @@ import { useContext } from "react";
 const Welcome = () => {
   const { loading, isLogged } = useContext(GlobalContext);
 
-  if (!loading && isLogged) return <Redirect href="/home" />;
+  //  if (!loading && isLogged) return <Redirect href="/home" />;
 
   return (
     <SafeAreaView style={{ backgroundColor: "#14452F" }}>

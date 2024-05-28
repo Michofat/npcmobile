@@ -1,17 +1,20 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CardItem = ({ title, condition }) => (
-  <View style={styles.card}>
-    <Text style={styles.cardTitle}>{title}</Text>
-    {condition ? (
-      <FontAwesome name="check-circle" size={24} color="green" />
-    ) : (
-      <Entypo name="circle-with-cross" size={24} color="red" />
-    )}
-  </View>
-);
+const CardItem = ({ title, condition, handlePress }) => {
+  return (
+    <TouchableOpacity style={styles.card} onPress={handlePress}>
+      <Text style={styles.cardTitle}>{title}</Text>
+      {condition ? (
+        <FontAwesome name="check-circle" size={24} color="green" />
+      ) : (
+        <Entypo name="circle-with-cross" size={24} color="red" />
+      )}
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {

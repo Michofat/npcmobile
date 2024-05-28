@@ -150,8 +150,14 @@ const Nok = () => {
           onPress={handleSubmit}
           disabled={!isFormValid()}
         >
-          <Text style={styles.buttonText}>SUBMIT</Text>
-          {loading && <ActivityIndicator size="large" color="yellow" />}
+          <Text style={styles.buttonText}>
+            {" "}
+            {loading ? (
+              <ActivityIndicator size="large" color="yellow" />
+            ) : (
+              "SUBMIT"
+            )}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

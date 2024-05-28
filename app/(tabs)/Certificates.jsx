@@ -87,8 +87,14 @@ export default function Certificates(props) {
               uploadCertificate(selectedImage);
             }}
           >
-            <Text style={styles.buttonText}>Upload now</Text>
-            {loading && <ActivityIndicator size="large" color="yellow" />}
+            <Text style={styles.buttonText}>
+              {" "}
+              {loading ? (
+                <ActivityIndicator size="large" color="yellow" />
+              ) : (
+                "Upload now"
+              )}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.exitButton} onPress={exitUpload}>
             <Text style={styles.buttonText}>Exit</Text>

@@ -3,22 +3,16 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
-import { Image, View, Text } from "react-native";
+import { Image, View, Text, StyleSheet, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function CustomDrawerContent(props) {
-  const { userInfo, ...rest } = props;
-  const router = useRouter();
+  const { userInfo, loggingout, ...rest } = props;
   const { top, bottom } = useSafeAreaInsets();
   return (
-    <View style={{ flex: 1 }}>
-      <DrawerContentScrollView
-        {...props}
-        scrollEnabled={false}
-        // contentContainerStyle={{ backgroundColor: "blue" }}
-      >
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <DrawerContentScrollView {...props} scrollEnabled={false}>
         <View
           style={{
             justifyContent: "center",
@@ -69,19 +63,27 @@ export default function CustomDrawerContent(props) {
         <DrawerItemList {...props} />
 
         <DrawerItem
-          label="Logout"
+          label="Log out"
           sty
-          onPress={() => {
-            logout();
-          }}
+          onPress={loggingout}
           icon={() => <AntDesign name="logout" size={18} />}
           labelStyle={{
-            fontSize: 20, // Adjust the font size
-            fontWeight: "700", // Apply font weight
-            color: "red", // Apply text color
+            fontSize: 20,
+            fontWeight: "700",
+            color: "red",
           }}
         />
       </DrawerContentScrollView>
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  userInfoSection: {
+    padding: 20,
+    backgroundColor: "#f4f4f4",
+  },
+});
