@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState, useMemo } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import NetInfo from "@react-native-community/netinfo";
 import { Alert } from "react-native";
 import { newRequest } from "../utils/newRequest";
 import axios from "axios";

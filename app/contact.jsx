@@ -8,7 +8,7 @@ import { CustomButton, Loader } from "../components";
 import { GlobalContext } from "../context/GlobalProvider";
 import { useContext } from "react";
 
-const Welcome = () => {
+const Contact = () => {
   const { loading, isLogged } = useContext(GlobalContext);
 
   if (!loading && isLogged) return <Redirect href="/home" />;
@@ -23,35 +23,24 @@ const Welcome = () => {
         }}
       >
         <View className="w-full flex justify-center items-center h-full px-4">
-          <Image
-            source={images.logo}
-            className="w-[130px] h-[84px]"
-            resizeMode="contain"
-          />
-
-          <Image
-            source={images.cards}
-            className="max-w-[380px] w-full h-[298px]"
-            resizeMode="contain"
-          />
-
           <View className="relative mt-5">
             <Text className="text-2xl text-white font-bold text-center">
-              National Population Commission{"\n"}
               <Text className="text-secondary-200">
-                Human Resource Info. System
+                National Population Commission, No. 1 Masaka Close, Off Olusegun
+                Obasanjo Way, Wuse Zone 7, Abuja, Nigeria
               </Text>
             </Text>
           </View>
 
           <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            We're excited to have NPC Staff onboard. Your HR portal is designed
-            to make managing your personal and professional information a
-            breeze.
+            hrm@npcng.com
+          </Text>
+          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+            +234-8063-378-481
           </Text>
 
           <CustomButton
-            title="Let's get started!"
+            title="Login!"
             handlePress={() => router.push("/sign-in")}
             containerStyles="w-full mt-7"
           />
@@ -63,4 +52,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default Contact;
