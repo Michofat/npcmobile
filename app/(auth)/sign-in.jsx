@@ -40,16 +40,18 @@ const SignIn = () => {
     <SafeAreaView style={{ backgroundColor: "#14452F" }}>
       <ScrollView>
         <View
-          className="w-full flex justify-center h-full px-4 my-6"
+          className="w-full flex justify-center px-4 my-6 h-screen"
           style={{
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
-          <Image
-            source={images.logo}
-            resizeMode="contain"
-            //  className="w-[115px] h-[34px]"
-          />
+          <View className="items-center">
+            <Image
+              source={images.logo}
+              resizeMode="contain"
+              //  className="w-[115px] h-[34px]"
+            />
+          </View>
 
           <Text className="text-2xl  font-semibold text-white mt-10 font-psemibold">
             Log in

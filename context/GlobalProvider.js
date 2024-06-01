@@ -203,17 +203,17 @@ export const GlobalProvider = ({ children }) => {
 
   const generateImageLink = async (selectedImage) => {
     setLoading(true); // Set loading to true while processing
-
+    console.log("ABT TO form data");
     try {
       const formData = new FormData();
-      formData.append("image", {
+      formData.append("myimage", {
         name: "image.jpg",
         uri: selectedImage,
         type: "image/jpg",
       });
 
-      const response = await axios.post(
-        "http://storage.npc-huris.com.ng:3003/uploadImage",
+      const response = await axios.put(
+        "https://storage.michofat.com/npcimage",
         formData,
         {
           headers: {
@@ -224,7 +224,8 @@ export const GlobalProvider = ({ children }) => {
 
       return response?.data;
     } catch (error) {
-      console.error("Error generating image link:", error);
+      console.log("KILOSHELE");
+      console.log("Error generating image link:", error);
       // Handle error gracefully
       Alert.alert("Error", "Failed to generate image link. Please try again.");
       return null; // Return null if an error occurs
@@ -421,6 +422,7 @@ export const GlobalProvider = ({ children }) => {
       alert(response?.data || "Upload successful");
       router.push("/home");
     } catch (error) {
+      console.log(error);
       alert(error.message || "Failed to upload image, please try again.");
     } finally {
       setLoading(false);
@@ -447,6 +449,7 @@ export const GlobalProvider = ({ children }) => {
       alert(response?.data || "Upload successful");
       router.push("/home");
     } catch (error) {
+      log;
       alert("Failed to upload signature. Please try again.");
     } finally {
       setLoading(false);
