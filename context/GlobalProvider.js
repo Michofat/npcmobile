@@ -501,6 +501,55 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const addredepnow = async (newstation, datered, datexit, desigpost) => {
+    if (!newstation.trim() || !datered.trim() || !datexit.trim()) {
+      Alert.alert(
+        "Error!",
+        "Please fill all the fields",
+        [{ text: "Try again", onPress: () => setLoading(false) }],
+        { cancelable: true }
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const userId = userInfo[0]?.id;
+      const fullName = userInfo[0]?.fullname;
+
+      const response = await newRequest.post(`/addredeployment/${userId}`, {
+        station: newstation,
+        dtrans: datered,
+        dexit: datexit,
+        desig: desigpost,
+        staffid: userId,
+        fulln: fullName,
+      });
+
+      Alert.alert(
+        "Success!",
+        response.data,
+        [{ text: "Okay", onPress: () => setLoading(false) }],
+        { cancelable: true }
+      );
+      router.push("/Redeployment");
+    } catch (error) {
+      Alert.alert(
+        "Error!!!",
+        error.message || "Failed, please try again",
+        [
+          {
+            text: "Failed, please try again",
+            onPress: () => setLoading(false),
+          },
+        ],
+        { cancelable: true }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const contextValue = useMemo(
     () => ({
       login,
@@ -524,6 +573,7 @@ export const GlobalProvider = ({ children }) => {
       setIsLogged,
       setUserInfo,
       setLoading,
+      addredepnow,
     }),
     [login, loading, isLogged, userInfo]
   );

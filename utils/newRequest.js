@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const baseURL = "http://141.136.44.124:3002/api/";
-const baseStorageURL = "http://storage.npc-huris.com.ng:3003/";
+// const baseURL = "http://141.136.44.124:3002/api/";
+// const baseLocalURL = "http://localhost:3002/api/";
+const baseURL = "https://npcmobilebackend.onrender.com/api/";
+const baseStorageURL = "http://storage.npc-huris.com.ng:3003/234/";
 
 export const newRequest = axios.create({
   baseURL,

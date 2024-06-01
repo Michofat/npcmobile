@@ -71,7 +71,6 @@ const ChangePassword = () => {
       );
       router.push("/home");
     } catch (error) {
-      // console.log("CHANGE Error!!!", error);
       if (error.response) {
         showAlert("Error!!!", error.response.data);
       } else if (error.request) {

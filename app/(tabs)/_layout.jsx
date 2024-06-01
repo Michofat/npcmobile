@@ -7,6 +7,8 @@ import {
   Ionicons,
   FontAwesome5,
   FontAwesome6,
+  MaterialIcons,
+  Entypo,
 } from "@expo/vector-icons";
 import CustomDrawerContent from "../../components/CustomDrawerContent";
 import { useContext } from "react";
@@ -28,24 +30,20 @@ const DrawerLayout = () => {
   if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
   const loggingout = async () => {
-    console.log("LOGGING OUT");
     try {
       await AsyncStorage.clear();
       setIsLogged(false);
       setUserInfo(null);
       setLoading(loading);
-      console.log("All items removed from AsyncStorage");
 
       // Redirect to the sign-in screen using replace
       router.push("/");
-      console.log("Navigated to SignIn screen");
     } catch (error) {
       Alert.alert("Error!!!", error.message || "Error during logout", [
         { text: "Okay" },
       ]);
       console.error("Error during logout", error);
     } finally {
-      console.log("Logout process finished");
     }
   };
   return (
@@ -211,6 +209,76 @@ const DrawerLayout = () => {
             headerTitle: "NoK Signature",
             drawerIcon: ({ size, color }) => (
               <FontAwesome6 name="signature" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Redeployment"
+          options={{
+            drawerLabel: "Redeployment",
+            headerTitle: "Redeployment",
+            drawerIcon: ({ size, color }) => (
+              <FontAwesome6 name="book" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="AddRedeployment"
+          options={{
+            drawerLabel: "Add Redeployment",
+            headerTitle: "Add Redeployment",
+            drawerIcon: ({ size, color }) => (
+              <FontAwesome6 name="plus" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Birthday"
+          options={{
+            drawerLabel: "Birthday",
+            headerTitle: "Birthday",
+            drawerIcon: ({ size, color }) => (
+              <MaterialIcons name="cake" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="LeaveHistory"
+          options={{
+            drawerLabel: "Leave History",
+            headerTitle: "Leave History",
+            drawerIcon: ({ size, color }) => (
+              <FontAwesome6 name="list-check" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="LeaveApplication"
+          options={{
+            drawerLabel: "Apply for Leave",
+            headerTitle: "Apply for Leave",
+            drawerIcon: ({ size, color }) => (
+              <Entypo name="pencil" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="SearchStaff"
+          options={{
+            drawerLabel: "Search Staff",
+            headerTitle: "Search Staff",
+            drawerIcon: ({ size, color }) => (
+              <FontAwesome5 name="search" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="ViewProfile"
+          options={{
+            drawerLabel: "View Profile",
+            headerTitle: "View Profile",
+            drawerIcon: ({ size, color }) => (
+              <AntDesign name="eye" size={size} color={color} />
             ),
           }}
         />
