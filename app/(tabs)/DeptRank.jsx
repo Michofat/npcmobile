@@ -36,7 +36,7 @@ const DeptRank = () => {
       const response = await newRequest.get("/fetchdeptrecord");
       setDeptview(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -45,7 +45,7 @@ const DeptRank = () => {
       const response = await newRequest.get("/fetchrankrecord");
       setRankView(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -54,7 +54,7 @@ const DeptRank = () => {
       const response = await newRequest.get("/fetchcadrerecord");
       setCadreView(response.data);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       // Handle error
     }
   };
@@ -64,7 +64,7 @@ const DeptRank = () => {
       const response = await newRequest.get("/fetchstation");
       setStationView(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Handle error
     }
   };
@@ -95,7 +95,7 @@ const DeptRank = () => {
 
         <RNPickerSelect
           onValueChange={(value) => setStation(value)}
-          items={transformedData(stationView, "ate", "ate")}
+          items={transformedData(stationView, "ate", "ate") || []}
           placeholder={{
             label: isFocus ? "..." : "Select item",
             value: null,

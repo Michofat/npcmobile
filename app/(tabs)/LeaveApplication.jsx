@@ -27,11 +27,18 @@ export default LeaveApplication = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [valueloaname, setValueloaname] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [loanview, setLoanview] = useState([]);
+  const [loanview, setLoanView] = useState([]);
   const [date, setDate] = useState(new Date());
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
   const [stationView, setStationView] = useState([]);
+
+  const maritalStatusOptions = [
+    { label: "Single", value: "Single" },
+    { label: "Married", value: "Married" },
+    { label: "Divorced", value: "Divorced" },
+    { label: "Separated", value: "Separated" },
+  ];
 
   const toggleDatepicker = () => setShowPicker(!showPicker);
 
@@ -66,11 +73,11 @@ export default LeaveApplication = () => {
   const processleave = async () => {
     setIsLoading(true);
     try {
-      const staffid = userInfo[0].id;
-      const fullname = userInfo[0].fullname;
-      const station = userInfo[0].station;
-      const emal = userInfo[0].emal;
-      const fon = userInfo[0].fon;
+      const staffid = userInfo[0]?.id;
+      const fullname = userInfo[0]?.fullname;
+      const station = userInfo[0]?.station;
+      const emal = userInfo[0]?.emal;
+      const fon = userInfo[0]?.fon;
       const response = await newRequest.post("/leaveapplication", {
         staffid,
         fulln: fullname,
@@ -103,9 +110,10 @@ export default LeaveApplication = () => {
   const fetchLeave = async () => {
     try {
       const response = await newRequest.get("/fetchleave");
-      setLoanview(response.data);
+
+      setLoanView(response?.data);
     } catch (error) {
-      alert(error.response.data);
+      alert(error?.response?.data);
     }
   };
 
@@ -113,9 +121,9 @@ export default LeaveApplication = () => {
     fetchLeave();
   }, []);
 
-  const transformedLoan = loanview.map((item) => ({
-    label: item.leavetype,
-    value: item.leavevalue,
+  const transformedLoan = loanview?.map((item) => ({
+    label: item?.leavetype,
+    value: item?.leavevalue,
   }));
 
   return (
@@ -127,7 +135,7 @@ export default LeaveApplication = () => {
 
       <RNPickerSelect
         onValueChange={(value) => setValueloaname(value)}
-        items={transformedLoan}
+        items={transformedLoan || []}
         placeholder={{
           label: isFocus ? "..." : "Select item",
           value: null,

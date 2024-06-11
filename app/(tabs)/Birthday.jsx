@@ -16,7 +16,7 @@ const Birthday = () => {
         const response = await newRequest.get("/birthdaytoday");
         setBdaytoday(response.data);
       } catch (error) {
-        console.error("Error fetching birthday data:", error);
+        // console.error("Error fetching birthday data:", error);
         alert(error.response?.data || "Failed to fetch birthday data");
       }
     };

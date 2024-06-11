@@ -27,7 +27,7 @@ export const GlobalProvider = ({ children }) => {
           setIsLogged(true);
         }
       } catch (error) {
-        console.error("Error retrieving user info from AsyncStorage", error);
+        // console.error("Error retrieving user info from AsyncStorage", error);
       }
     };
 
@@ -44,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
       setIsLogged(true);
     } catch (error) {
       Alert.alert("Error", error.response?.data || "An error occurred");
-      console.error("Error during login", error.response?.data || error);
+      // console.error("Error during login", error.response?.data || error);
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export const GlobalProvider = ({ children }) => {
       setUserInfo(updatedUserInfo);
       await AsyncStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
     } catch (error) {
-      console.error("AsyncStorage update error", error);
+      // console.error("AsyncStorage update error", error);
       Alert.alert("Error", "Failed to update user data in AsyncStorage");
     }
   };
@@ -78,7 +78,7 @@ export const GlobalProvider = ({ children }) => {
       setUserInfo(newUserInfo);
       await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
     } catch (error) {
-      console.error("Error updating user info:", error);
+      // console.error("Error updating user info:", error);
       Alert.alert("Error", "Failed to update user data. Please try again.");
     }
   };
@@ -168,7 +168,7 @@ export const GlobalProvider = ({ children }) => {
     const id = userInfo[0]?.id;
 
     if (!id) {
-      console.error("User ID not available.");
+      // console.error("User ID not available.");
       return;
     }
 
@@ -203,7 +203,7 @@ export const GlobalProvider = ({ children }) => {
 
   const generateImageLink = async (selectedImage) => {
     setLoading(true); // Set loading to true while processing
-    console.log("ABT TO form data");
+
     try {
       const formData = new FormData();
       formData.append("myimage", {
@@ -224,8 +224,6 @@ export const GlobalProvider = ({ children }) => {
 
       return response?.data;
     } catch (error) {
-      console.log("KILOSHELE");
-      console.log("Error generating image link:", error);
       // Handle error gracefully
       Alert.alert("Error", "Failed to generate image link. Please try again.");
       return null; // Return null if an error occurs
@@ -358,7 +356,7 @@ export const GlobalProvider = ({ children }) => {
       Alert.alert("Success!", updateResponse.data, [{ text: "OK" }]);
       router.push("/home");
     } catch (error) {
-      console.error("Edit error:", error);
+      // console.error("Edit error:", error);
 
       // Show error alert
       Alert.alert(
@@ -422,7 +420,6 @@ export const GlobalProvider = ({ children }) => {
       alert(response?.data || "Upload successful");
       router.push("/home");
     } catch (error) {
-      console.log(error);
       alert(error.message || "Failed to upload image, please try again.");
     } finally {
       setLoading(false);

@@ -1,12 +1,6 @@
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 
-const CustomButton = ({
-  title,
-  handlePress,
-  containerStyles,
-  textStyles,
-  isLoading,
-}) => {
+const CustomButton = ({ title, handlePress, containerStyles, isLoading }) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
@@ -15,19 +9,10 @@ const CustomButton = ({
         isLoading ? "opacity-50" : ""
       }`}
       disabled={isLoading}
+      accessible={true}
+      accessibilityLabel={title} // Provide a meaningful label for accessibility
     >
-      <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>
-        {title}
-      </Text>
-
-      {isLoading && (
-        <ActivityIndicator
-          animating={isLoading}
-          color="#fff"
-          size="small"
-          className="ml-2"
-        />
-      )}
+      <Text className={"text-white font-psemibold text-lg"}>{title}</Text>
     </TouchableOpacity>
   );
 };

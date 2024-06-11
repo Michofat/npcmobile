@@ -42,10 +42,12 @@ const DrawerLayout = () => {
       Alert.alert("Error!!!", error.message || "Error during logout", [
         { text: "Okay" },
       ]);
-      console.error("Error during logout", error);
+      // console.error("Error during logout", error);
     } finally {
     }
   };
+  //loggingout();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer

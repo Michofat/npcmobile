@@ -8,7 +8,7 @@ import { GlobalContext } from "../../context/GlobalProvider";
 import { validateEmail } from "../../helperFunctions/validate";
 
 const SignIn = () => {
-  const { login, loading } = useContext(GlobalContext);
+  const { login } = useContext(GlobalContext);
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -30,9 +30,9 @@ const SignIn = () => {
       Alert.alert("Error", "Password must be between 8 and 16 characters.");
       return;
     }
-    setSubmitting(true);
+    // setSubmitting(true);
     login(email, password).finally(() => {
-      setSubmitting(false);
+      //   setSubmitting(false);
     });
   };
 
@@ -51,25 +51,27 @@ const SignIn = () => {
               resizeMode="contain"
               //  className="w-[115px] h-[34px]"
             />
+            <Text className="text-4xl  font-semibold text-white mt-10 font-psemibold">
+              Log in
+            </Text>
           </View>
 
-          <Text className="text-2xl  font-semibold text-white mt-10 font-psemibold">
-            Log in
-          </Text>
-
           <FormField
-            title="Email"
+            placeholder="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt-7"
             keyboardType="email-address"
+            maxLength={80}
           />
 
           <FormField
-            title="Password"
+            placeholder="Password"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
+            keyboardType="default"
+            maxLength={16}
           />
 
           <CustomButton

@@ -15,7 +15,7 @@ const LeaveHistory = () => {
       );
       setLeaveHistory(response.data);
     } catch (error) {
-      console.error("Error fetching leave history:", error);
+      //console.error("Error fetching leave history:", error);
       alert(error.response?.data || "Failed to fetch leave history");
     }
   };

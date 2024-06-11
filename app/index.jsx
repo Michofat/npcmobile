@@ -29,16 +29,10 @@ const Welcome = () => {
             resizeMode="contain"
           />
 
-          <Image
-            source={images.cards}
-            className="max-w-[380px] w-full h-[298px]"
-            resizeMode="contain"
-          />
-
           <View className="relative mt-5">
             <Text className="text-2xl text-white font-bold text-center">
               National Population Commission{"\n"}
-              <Text className="text-secondary-200">
+              <Text className=" text-gray-300">
                 Human Resource Info. System
               </Text>
             </Text>
