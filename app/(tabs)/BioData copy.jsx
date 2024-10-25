@@ -29,12 +29,12 @@ const BioData = () => {
   const { userInfo, processbio, loading } = useContext(GlobalContext);
 
   const [isFocus, setIsFocus] = useState(false);
-  const [gender, setGender] = useState(userInfo[0]?.sex);
-  const [marital, setMarital] = useState(userInfo[0]?.marit);
-  const [title, setTitle] = useState(userInfo[0]?.titl);
-  const [fon, setFon] = useState(userInfo[0]?.fon);
-  const [addy, setAddy] = useState(userInfo[0]?.addy);
-  const [emal, setEmal] = useState(userInfo[0]?.emal);
+  const [gender, setGender] = useState(userInfo[0]?.sex || "");
+  const [marital, setMarital] = useState(userInfo[0]?.marit || "");
+  const [title, setTitle] = useState(userInfo[0]?.titl || "");
+  const [fon, setFon] = useState(userInfo[0]?.fon || "");
+  const [addy, setAddy] = useState(userInfo[0]?.addy || "");
+  const [emal, setEmal] = useState(userInfo[0]?.emal || "");
 
   const handleSubmit = () => {
     if (title && gender && marital && fon && addy) {
