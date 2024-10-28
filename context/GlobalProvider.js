@@ -41,6 +41,7 @@ export const GlobalProvider = ({ children }) => {
       const newUserInfo = response.data;
       await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
       setUserInfo(newUserInfo);
+
       setIsLogged(true);
     } catch (error) {
       Alert.alert("Error", error.response?.data || "An error occurred");
@@ -164,15 +165,51 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // const uploadCertificate = async (selectedImage) => {
+  //   const id = userInfo[0]?.id;
+
+  //   if (!id) {
+  //     // console.error("User ID not available.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const imageUrl = await generateImageLink(selectedImage);
+  //     const response = await newRequest.put(`/uploadcertificate/${id}`, {
+  //       imageUrl,
+  //     });
+
+  //     await updateDataInAsyncStorage(id);
+
+  //     Alert.alert("Success!", response.data, [{ text: "Okay" }], {
+  //       cancelable: true,
+  //     });
+  //     router.push("/home");
+  //   } catch (error) {
+  //     Alert.alert(
+  //       "Error!!!",
+  //       error.message,
+  //       [
+  //         {
+  //           text: "Upload failed, please try again",
+  //           onPress: () => setLoading(false),
+  //         },
+  //       ],
+  //       { cancelable: true }
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const uploadCertificate = async (selectedImage) => {
     const id = userInfo[0]?.id;
 
     if (!id) {
-      // console.error("User ID not available.");
-      return;
+      return false;
     }
 
     try {
+      setLoading(true); // Ensure loading is set at the beginning
       const imageUrl = await generateImageLink(selectedImage);
       const response = await newRequest.put(`/uploadcertificate/${id}`, {
         imageUrl,
@@ -183,7 +220,9 @@ export const GlobalProvider = ({ children }) => {
       Alert.alert("Success!", response.data, [{ text: "Okay" }], {
         cancelable: true,
       });
+
       router.push("/home");
+      return true; // Return true on successful upload
     } catch (error) {
       Alert.alert(
         "Error!!!",
@@ -196,6 +235,7 @@ export const GlobalProvider = ({ children }) => {
         ],
         { cancelable: true }
       );
+      return false; // Return false on failure
     } finally {
       setLoading(false);
     }

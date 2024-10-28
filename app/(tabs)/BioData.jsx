@@ -62,7 +62,7 @@ const BioData = () => {
           <RNPickerSelect
             onValueChange={(value) => {
               setGender(value);
-              console.log("Selected Gender:", value);
+              //  console.log("Selected Gender:", value);
             }}
             items={genderOptions}
             placeholder={{
@@ -82,7 +82,7 @@ const BioData = () => {
           <RNPickerSelect
             onValueChange={(value) => {
               setMarital(value);
-              console.log("Selected Gender:", value);
+              //console.log("Selected Gender:", value);
             }}
             items={maritalStatusOptions}
             placeholder={{

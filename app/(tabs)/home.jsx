@@ -24,6 +24,8 @@ const Home = () => {
     completed,
   } = useUserInfo();
 
+  //console.log("ccc", comppersonal);
+
   const cardDetails = [
     {
       id: 12,

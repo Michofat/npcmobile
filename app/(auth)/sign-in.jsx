@@ -16,7 +16,9 @@ const SignIn = () => {
   });
 
   const handleSignIn = () => {
-    const { email, password } = form;
+    let { email, password } = form;
+    email = email.trim().toLowerCase();
+    password = password.trim();
     if (!email || !password) {
       Alert.alert("Error", "Please enter both email and password.");
       return;

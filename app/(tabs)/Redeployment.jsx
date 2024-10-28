@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
+  FlatList,
+} from "react-native";
 import { newRequest } from "../../utils/newRequest";
-import RedeployList from "../../components/RedeployList";
 import { GlobalContext } from "../../context/GlobalProvider";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -24,34 +30,35 @@ const Redeployment = () => {
           error.response?.data || "Failed to fetch redeployments"
         );
       } finally {
-        setLoading(false); // Set loading state to false when finished
+        setLoading(false);
       }
     };
 
     fetchRedeployments();
-  }, [userInfo, loading]); // useEffect dependencies
+  }, [userInfo]); // Removed loading from dependencies
 
   const handleRefresh = () => {
     setLoading(true); // Trigger loading state to true to re-run useEffect
   };
 
-  //   useEffect(() => {
-  //     const fetchRedeployments = async () => {
-  //       try {
-  //         const response = await newRequest.get(
-  //           `/myredeployments/${userInfo[0].id}`
-  //         );
-  //         setRedeployments(response.data);
-  //       } catch (error) {
-  //         Alert.alert(
-  //           "Error",
-  //           error.response?.data || "Failed to fetch redeployments"
-  //         );
-  //       }
-  //     };
+  const renderRedeploymentItem = ({ item }) => (
+    <View style={styles.redeploymentCard}>
+      <Text style={styles.designation}>{item.desig}</Text>
+      <Text style={styles.infoText}>
+        Date Redeployed: {formatDate(item.dtrans)}
+      </Text>
+      <Text style={styles.infoText}>
+        Date Posted Out: {formatDate(item.dexit)}
+      </Text>
+      <Text style={styles.infoText}>Station: {item.station}</Text>
+    </View>
+  );
 
-  //     fetchRedeployments();
-  //   }, [userInfo]);
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", options);
+  };
 
   return (
     <View style={styles.container}>
@@ -59,12 +66,18 @@ const Redeployment = () => {
         <Text style={styles.refreshButtonText}>Refresh</Text>
         <AntDesign name="reload1" size={24} color="white" />
       </TouchableOpacity>
-      <RedeployList transferHistory={redeployments} />
+      <FlatList
+        data={redeployments}
+        renderItem={renderRedeploymentItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+      />
       <TouchableOpacity
-        style={styles.enbutton}
+        style={styles.floatingButton}
         onPress={() => router.push("AddRedeployment")}
       >
-        <Text style={styles.enbuttonText}>Add new record</Text>
+        <AntDesign name="plus" size={30} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -76,25 +89,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
-  },
-  enbutton: {
-    backgroundColor: "green",
-    padding: 15,
-    borderRadius: 10,
-    width: "80%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignSelf: "center",
-  },
-  enbuttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
-    marginRight: 10,
+    paddingHorizontal: 16, // Added padding for better aesthetics
   },
   refreshButton: {
     backgroundColor: "green",
-    padding: 5,
+    padding: 10,
     borderRadius: 10,
     width: "60%",
     flexDirection: "row",
@@ -107,5 +106,45 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     marginRight: 10,
+  },
+  listContainer: {
+    paddingBottom: 80, // Extra space for the floating button
+  },
+  redeploymentCard: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  designation: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  infoText: {
+    fontSize: 14,
+    marginBottom: 4,
+    color: "#555",
+  },
+  floatingButton: {
+    backgroundColor: "green",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
