@@ -147,7 +147,6 @@ const LeaveApplication = () => {
 
       <Text style={styles.label}>Type of leave</Text>
       <RNPickerSelect
-        value={valueloaname}
         onValueChange={(value) => setValueloaname(value)}
         items={transformedLoan || []}
         placeholder={{
