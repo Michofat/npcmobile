@@ -12,10 +12,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { useUserInfo } from "../../hooks/useUserInfo";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalProvider";
+import { router } from "expo-router";
 import { formatDate } from "../../helperFunctions/validate";
 
-const Profile = () => {
-  const { refreshProfileNow } = useContext(GlobalContext);
+const Preview = () => {
+  const { requestApproval } = useContext(GlobalContext);
   const {
     id,
     pix,
@@ -28,7 +29,6 @@ const Profile = () => {
     orig,
     lga,
     station,
-    postinglg,
     dfirstappt,
     dconfirm,
     dpreappt,
@@ -69,7 +69,7 @@ const Profile = () => {
   const refresher = () => {
     Alert.alert(
       "Notification!",
-      "You are about to reload your profile. Click OK to continue.",
+      "You are about to send your profile to Admin for approval. You will no longer be able to make changes. Click OK to continue.",
       [
         {
           text: "Cancel",
@@ -81,7 +81,7 @@ const Profile = () => {
         {
           text: "OK",
           onPress: () => {
-            refreshProfileNow(id);
+            requestApproval();
           },
         },
       ],
@@ -89,7 +89,7 @@ const Profile = () => {
     );
   };
 
-  const ProfileSection = ({ icon, data }) => (
+  const PreviewSection = ({ icon, data }) => (
     <View>
       <View style={styles.hori} />
       <View style={styles.containdata}>
@@ -106,12 +106,17 @@ const Profile = () => {
           style={styles.ImageBackground}
           source={require("../../assets/npcbuild.jpg")}
         >
-          <Image style={styles.mypic} source={{ uri: pix }} />
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => router.push("/UpdatePassport")}
+          >
+            <Image style={styles.mypic} source={{ uri: pix }} />
+          </TouchableOpacity>
         </ImageBackground>
         <Text style={styles.centeredText}>{`${titl} ${fullname}`}</Text>
         <Text style={styles.rankText}>{rank}</Text>
 
-        <ProfileSection
+        <PreviewSection
           icon="user"
           data={
             <>
@@ -123,13 +128,18 @@ const Profile = () => {
             </>
           }
         />
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/BioData")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
+        </TouchableOpacity>
 
-        <ProfileSection
+        <PreviewSection
           icon="home"
           data={
             <>
               <ProfileText title="Station" value={station} />
-              <ProfileText title="Posting" value={postinglg} />
               <ProfileText
                 title="Date of first appointment"
                 value={formatDate(dfirstappt)}
@@ -149,14 +159,27 @@ const Profile = () => {
                 value={retireyear}
               />
               <ProfileText
-                title="Signature"
-                value={<Image style={styles.mysig} source={{ uri: siggn }} />}
+                title="My signature"
+                value={
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => router.push("/UploadSignature")}
+                  >
+                    <Image style={styles.mysig} source={{ uri: siggn }} />
+                  </TouchableOpacity>
+                }
               />
             </>
           }
         />
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/DeptRank")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
+        </TouchableOpacity>
 
-        <ProfileSection
+        <PreviewSection
           icon="book"
           data={
             <>
@@ -168,8 +191,14 @@ const Profile = () => {
             </>
           }
         />
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/BankPen")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
+        </TouchableOpacity>
 
-        <ProfileSection
+        <PreviewSection
           icon="edit"
           data={
             <>
@@ -184,8 +213,13 @@ const Profile = () => {
             </>
           }
         />
-
-        <ProfileSection
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/Qualifications")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
+        </TouchableOpacity>
+        <PreviewSection
           icon="mail"
           data={
             <>
@@ -197,7 +231,7 @@ const Profile = () => {
           }
         />
 
-        <ProfileSection
+        <PreviewSection
           icon="edit"
           data={
             <>
@@ -207,8 +241,14 @@ const Profile = () => {
             </>
           }
         />
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/Spouse")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
+        </TouchableOpacity>
 
-        <ProfileSection
+        <PreviewSection
           icon="file1"
           data={
             <>
@@ -217,8 +257,19 @@ const Profile = () => {
               <ProfileText title="Phone number" value={nokfon} />
               <ProfileText title="Address" value={nokaddy} />
               <View style={styles.nokContainer}>
-                <Image style={styles.nokpic} source={{ uri: pixnok }} />
-                <Image style={styles.noksign} source={{ uri: noksign }} />
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => router.push("/NokPassport")}
+                >
+                  <Image style={styles.nokpic} source={{ uri: pixnok }} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => router.push("/NokSignature")}
+                >
+                  <Image style={styles.noksign} source={{ uri: noksign }} />
+                </TouchableOpacity>
               </View>
               <ProfileText title="Next of kin 1" value={nok2} />
               <ProfileText title="Relationship" value={nok2who} />
@@ -227,10 +278,17 @@ const Profile = () => {
             </>
           }
         />
-
-        <TouchableOpacity style={styles.opac} onPress={refresher}>
-          <Text style={styles.optext}>Refresh profile</Text>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push("/Nok")}
+        >
+          <AntDesign name="edit" size={30} color="blue" />
         </TouchableOpacity>
+        {completed === 1 && (
+          <TouchableOpacity style={styles.opac} onPress={refresher}>
+            <Text style={styles.optext}>Send for Approval</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -272,6 +330,7 @@ const styles = StyleSheet.create({
   mysig: {
     width: 250,
     height: 200,
+    borderRadius: 70,
   },
   nokpic: {
     width: 80,
@@ -318,6 +377,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 10,
   },
+  editButton: {
+    alignItems: "center",
+    position: "relative",
+    margin: 10,
+    color: "blue",
+  },
 });
 
-export default Profile;
+export default Preview;

@@ -7,17 +7,21 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { newRequest } from "../../utils/newRequest";
 import { useUserInfo } from "../../hooks/useUserInfo";
 import { router } from "expo-router";
 import { showAlert } from "../../utils/showalert";
-import { FontAwesome } from "@expo/vector-icons";
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isOldPasswordVisible, setOldPasswordVisible] = useState(false);
+  const [isNewPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const { id } = useUserInfo();
 
@@ -89,45 +93,90 @@ const ChangePassword = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textinput}>Current password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="********"
-        secureTextEntry={true}
-        value={oldPassword}
-        onChangeText={setOldPassword}
-        autoComplete="off"
-      />
-      <Text style={styles.textinput}>New password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="********"
-        secureTextEntry={true}
-        value={newPassword}
-        onChangeText={setNewPassword}
-        autoComplete="off"
-      />
-      <Text style={styles.textinput}>Confirm new password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="********"
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        autoComplete="off"
-      />
+      <Text style={styles.header}>Change Password</Text>
+
+      {/* Old Password */}
+      <View style={styles.inputWrapper}>
+        <Text style={styles.label}>Current Password</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter current password"
+            secureTextEntry={!isOldPasswordVisible}
+            value={oldPassword}
+            onChangeText={setOldPassword}
+            autoComplete="off"
+          />
+          <TouchableOpacity
+            onPress={() => setOldPasswordVisible(!isOldPasswordVisible)}
+          >
+            <FontAwesome
+              name={isOldPasswordVisible ? "eye" : "eye-slash"}
+              size={20}
+              color="#888"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* New Password */}
+      <View style={styles.inputWrapper}>
+        <Text style={styles.label}>New Password</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter new password"
+            secureTextEntry={!isNewPasswordVisible}
+            value={newPassword}
+            onChangeText={setNewPassword}
+            autoComplete="off"
+          />
+          <TouchableOpacity
+            onPress={() => setNewPasswordVisible(!isNewPasswordVisible)}
+          >
+            <FontAwesome
+              name={isNewPasswordVisible ? "eye" : "eye-slash"}
+              size={20}
+              color="#888"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Confirm Password */}
+      <View style={styles.inputWrapper}>
+        <Text style={styles.label}>Confirm New Password</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm new password"
+            secureTextEntry={!isConfirmPasswordVisible}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            autoComplete="off"
+          />
+          <TouchableOpacity
+            onPress={() => setConfirmPasswordVisible(!isConfirmPasswordVisible)}
+          >
+            <FontAwesome
+              name={isConfirmPasswordVisible ? "eye" : "eye-slash"}
+              size={20}
+              color="#888"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <TouchableOpacity
-        style={[styles.link, styles.button]}
+        style={styles.button}
         onPress={changepass}
+        disabled={isLoading}
       >
-        <Text style={styles.buttonText}>
-          {isLoading ? (
-            <ActivityIndicator size="large" color="yellow" />
-          ) : (
-            "SUBMIT"
-          )}
-        </Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Submit</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -136,37 +185,48 @@ const ChangePassword = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
-    margin: 15,
+    padding: 20,
+    backgroundColor: "#f9f9f9",
   },
-  backButton: {
-    position: "absolute",
-    top: 10,
-    left: 40,
+  header: {
+    fontSize: 24,
+    fontWeight: "600",
+    marginBottom: 20,
+    textAlign: "center",
+    color: "#333",
+  },
+  inputWrapper: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "#555",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: "#fff",
   },
   input: {
-    marginBottom: 30,
-    marginTop: 10,
-    borderWidth: 0.5,
+    flex: 1,
     height: 40,
-    padding: 10,
-  },
-  textinput: {
-    fontSize: 18,
-  },
-  link: {
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    alignItems: "center",
+    fontSize: 16,
   },
   button: {
     backgroundColor: "#14452F",
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
   },
   buttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
 });
 

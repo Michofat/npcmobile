@@ -17,28 +17,30 @@ const Redeployment = () => {
   const [redeployments, setRedeployments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchRedeployments = async () => {
-      try {
-        const response = await newRequest.get(
-          `/myredeployments/${userInfo[0].id}`
-        );
-        setRedeployments(response.data);
-      } catch (error) {
-        Alert.alert(
-          "Error",
-          error.response?.data || "Failed to fetch redeployments"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch redeployments when component mounts and whenever userInfo changes
+  const fetchRedeployments = async () => {
+    try {
+      const response = await newRequest.get(
+        `/myredeployments/${userInfo[0].id}`
+      );
+      setRedeployments(response.data);
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        error.response?.data || "Failed to fetch redeployments"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchRedeployments();
-  }, [userInfo]); // Removed loading from dependencies
+  }, [userInfo]); // Fetch when userInfo changes
 
   const handleRefresh = () => {
-    setLoading(true); // Trigger loading state to true to re-run useEffect
+    setLoading(true); // Show loading spinner
+    fetchRedeployments(); // Re-fetch redeployments on refresh
   };
 
   const renderRedeploymentItem = ({ item }) => (
@@ -72,6 +74,8 @@ const Redeployment = () => {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        refreshing={loading} // This shows the refreshing spinner while loading
+        onRefresh={handleRefresh} // This triggers handleRefresh on pull-to-refresh
       />
       <TouchableOpacity
         style={styles.floatingButton}

@@ -20,6 +20,7 @@ export const useUserInfo = () => {
     orig,
     lga,
     station,
+    postinglg,
     dfirstappt,
     dconfirm,
     dpreappt,
@@ -67,6 +68,8 @@ export const useUserInfo = () => {
     compnokpass,
     compnoksign,
     completed,
+    finall,
+    compdates,
   } = userInfo[0];
   //console.log(comppersonal);
   return {
@@ -81,6 +84,7 @@ export const useUserInfo = () => {
     orig,
     lga,
     station,
+    postinglg,
     dfirstappt,
     dconfirm,
     dpreappt,
@@ -128,5 +132,7 @@ export const useUserInfo = () => {
     compnokpass,
     compnoksign,
     completed,
+    finall,
+    compdates,
   };
 };

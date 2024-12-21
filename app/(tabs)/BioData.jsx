@@ -7,7 +7,6 @@ import {
   TextInput,
   ScrollView,
   Alert,
-  Platform,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../../context/GlobalProvider";
@@ -28,7 +27,6 @@ const maritalStatusOptions = [
 const BioData = () => {
   const { userInfo, processbio, loading } = useContext(GlobalContext);
 
-  const [isFocus, setIsFocus] = useState(false);
   const [gender, setGender] = useState(userInfo[0]?.sex);
   const [marital, setMarital] = useState(userInfo[0]?.marit);
   const [title, setTitle] = useState(userInfo[0]?.titl);
@@ -45,187 +43,168 @@ const BioData = () => {
   };
 
   return (
-    <>
-      <ScrollView>
-        <Text style={styles.dws}>Edit Profile</Text>
-        <View style={styles.container}>
-          <Text style={styles.inputTitle}>Title (Mr/Mrs/Dr/...)</Text>
-          <TextInput
-            maxLength={20}
-            onChangeText={setTitle}
-            value={title}
-            style={styles.input}
-          />
-          <Text style={styles.textInput}>
-            Select your gender ({userInfo[0]?.sex})
-          </Text>
-          <RNPickerSelect
-            onValueChange={(value) => {
-              setGender(value);
-              //  console.log("Selected Gender:", value);
-            }}
-            items={genderOptions}
-            placeholder={{
-              label: isFocus ? "..." : "Select gender",
-              value: null,
-              color: "#9EA0A4",
-            }}
-            onOpen={() => setIsFocus(true)}
-            onClose={() => setIsFocus(false)}
-            style={pickerSelectStyles.input}
-          />
+    <ScrollView style={styles.screen}>
+      <Text style={styles.header}>Edit Profile</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionHeader}>Personal Information</Text>
+        <TextInput
+          placeholder="Title (e.g., Mr, Mrs, Dr)"
+          maxLength={20}
+          value={title}
+          onChangeText={setTitle}
+          style={styles.input}
+        />
+        <RNPickerSelect
+          items={genderOptions}
+          value={gender}
+          onValueChange={setGender}
+          placeholder={{ label: "Select Gender", value: null }}
+          style={pickerSelectStyles}
+        />
+        <RNPickerSelect
+          items={maritalStatusOptions}
+          value={marital}
+          onValueChange={setMarital}
+          placeholder={{ label: "Select Marital Status", value: null }}
+          style={pickerSelectStyles}
+        />
+      </View>
 
-          <Text style={styles.textInput}>
-            Select marital status ({userInfo[0]?.marit})
-          </Text>
-
-          <RNPickerSelect
-            onValueChange={(value) => {
-              setMarital(value);
-              //console.log("Selected Gender:", value);
-            }}
-            items={maritalStatusOptions}
-            placeholder={{
-              label: isFocus ? "..." : "Select item",
-              value: null,
-              color: "#9EA0A4",
-            }}
-            onOpen={() => setIsFocus(true)}
-            onClose={() => setIsFocus(false)}
-            style={pickerSelectStyles.input}
-          />
-
-          <Text style={styles.inputTitle}>Email address</Text>
-          <TextInput
-            maxLength={65}
-            autoCapitalize="none"
-            value={emal}
-            style={styles.input}
-            editable={false}
-            selectTextOnFocus={false}
-          />
-          <Text style={styles.inputTitle}>Phone number *</Text>
-          <TextInput
-            maxLength={11}
-            onChangeText={setFon}
-            keyboardType="number-pad"
-            value={fon}
-            style={styles.input}
-          />
-          <Text style={styles.inputTitle}>Residential address *</Text>
-          <TextInput
-            editable
-            multiline
-            numberOfLines={3}
-            maxLength={250}
-            onChangeText={setAddy}
-            value={addy}
-            style={styles.input2}
-          />
-          <TouchableOpacity
-            style={[
-              styles.link,
-              title && gender && marital && fon && addy
-                ? styles.enbutton
-                : styles.disbutton,
-            ]}
-            onPress={handleSubmit}
-            disabled={!title || !gender || !marital || !fon || !addy}
-          >
-            <Text style={styles.opac}>
-              {loading ? (
-                <ActivityIndicator size="large" color="yellow" />
-              ) : (
-                "SUBMIT"
-              )}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </>
+      <View style={styles.card}>
+        <Text style={styles.sectionHeader}>Contact Information</Text>
+        <TextInput
+          placeholder="Email Address"
+          value={emal}
+          editable={false}
+          style={[styles.input, styles.disabledInput]}
+        />
+        <TextInput
+          placeholder="Phone Number"
+          maxLength={11}
+          keyboardType="number-pad"
+          value={fon}
+          onChangeText={setFon}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Residential Address"
+          value={addy}
+          onChangeText={setAddy}
+          multiline
+          numberOfLines={3}
+          style={styles.textArea}
+        />
+      </View>
+      {userInfo[0]?.completed < 2 && (
+        <TouchableOpacity
+          style={[
+            styles.submitButton,
+            title && gender && marital && fon && addy
+              ? styles.activeButton
+              : styles.inactiveButton,
+          ]}
+          onPress={handleSubmit}
+          disabled={loading || !(title && gender && marital && fon && addy)}
+        >
+          {loading ? (
+            <ActivityIndicator color="#FFF" />
+          ) : (
+            <Text style={styles.submitButtonText}>SUBMIT</Text>
+          )}
+        </TouchableOpacity>
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
+    backgroundColor: "#F5F5F5",
     flex: 1,
-    padding: 40,
   },
-  dws: {
-    margin: 20,
-    fontSize: 25,
-    fontWeight: "700",
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 20,
+    textAlign: "center",
+    color: "#333",
+  },
+  card: {
+    backgroundColor: "#FFF",
+    margin: 10,
+    padding: 15,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#444",
   },
   input: {
-    marginBottom: 30,
-    marginTop: 10,
-    borderWidth: 0.5,
-    height: 40,
-    padding: 10,
-    borderRadius: 5,
-  },
-  input2: {
-    marginBottom: 30,
-    borderWidth: 0.5,
-    padding: 10,
-    borderRadius: 5,
-  },
-  inputTitle: { marginVertical: 15, fontSize: 18 },
-  textInput: {
-    fontSize: 18,
-    marginTop: 15,
-    fontWeight: "600",
-  },
-  dropdown: {
-    borderWidth: 0.5,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 30,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  enbutton: { backgroundColor: "green" },
-  disbutton: { backgroundColor: "#999999" },
-  icon: {
-    marginRight: 10,
-  },
-  link: {
     borderWidth: 1,
+    borderColor: "#CCC",
     borderRadius: 5,
     padding: 10,
-    alignItems: "center",
-    marginTop: 30,
+    marginBottom: 15,
+    fontSize: 16,
+    backgroundColor: "#FFF",
   },
-  opac: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
+  textArea: {
+    borderWidth: 1,
+    borderColor: "#CCC",
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: "#FFF",
+  },
+  disabledInput: {
+    backgroundColor: "#EEE",
+    color: "#666",
+  },
+  submitButton: {
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  activeButton: {
+    backgroundColor: "green",
+  },
+  inactiveButton: {
+    backgroundColor: "#999",
+  },
+  submitButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
-const pickerSelectStyles = StyleSheet.create({
-  input: {
+const pickerSelectStyles = {
+  inputIOS: {
     fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: Platform.OS === "ios" ? 12 : 8, // Adjust padding based on platform
+    padding: 10,
     borderWidth: 1,
-    borderColor: "black", // Change border color as needed
-    borderRadius: 4,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderColor: "#CCC",
+    borderRadius: 5,
+    backgroundColor: "#FFF",
+    marginBottom: 15,
   },
-});
+  inputAndroid: {
+    fontSize: 16,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#CCC",
+    borderRadius: 5,
+    backgroundColor: "#FFF",
+    marginBottom: 15,
+  },
+};
 
 export default BioData;

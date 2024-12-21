@@ -95,9 +95,19 @@ const DrawerLayout = () => {
           }}
         />
         <Drawer.Screen
+          name="preview"
+          options={{
+            drawerLabel: "Preview",
+            headerTitle: "Preview",
+            drawerIcon: ({ size, color }) => (
+              <AntDesign name="eye" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
           name="ChangePassword"
           options={{
-            drawerLabel: "Change password",
+            drawerLabel: "Password",
             headerTitle: "Change password",
             drawerIcon: ({ size, color }) => (
               <AntDesign name="lock" size={size} color={color} />
@@ -111,6 +121,16 @@ const DrawerLayout = () => {
             headerTitle: "Bio Data",
             drawerIcon: ({ size, color }) => (
               <AntDesign name="book" size={size} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="DateForm"
+          options={{
+            drawerLabel: "Date Form",
+            headerTitle: "Date Form",
+            drawerIcon: ({ size, color }) => (
+              <Entypo name="clock" size={size} color={color} />
             ),
           }}
         />

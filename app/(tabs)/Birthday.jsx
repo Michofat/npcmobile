@@ -14,7 +14,8 @@ const Birthday = () => {
     const todaybirthday = async () => {
       try {
         const response = await newRequest.get("/birthdaytoday");
-        setBdaytoday(response.data);
+        const responseData = response.data;
+        setBdaytoday(responseData);
       } catch (error) {
         // console.error("Error fetching birthday data:", error);
         alert(error.response?.data || "Failed to fetch birthday data");

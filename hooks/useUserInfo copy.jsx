@@ -67,6 +67,7 @@ export const useUserInfo = () => {
     compnokpass,
     compnoksign,
     completed,
+    compdates,
   } = userInfo[0];
   //console.log(comppersonal);
   return {
@@ -128,5 +129,6 @@ export const useUserInfo = () => {
     compnokpass,
     compnoksign,
     completed,
+    compdates,
   };
 };

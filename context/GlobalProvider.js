@@ -78,9 +78,85 @@ export const GlobalProvider = ({ children }) => {
 
       setUserInfo(newUserInfo);
       await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
+      Alert.alert(
+        "Notification!",
+        "Successful",
+        [
+          {
+            text: "OK",
+            onPress: null,
+          },
+        ],
+        { cancelable: true }
+      );
     } catch (error) {
       // console.error("Error updating user info:", error);
       Alert.alert("Error", "Failed to update user data. Please try again.");
+    }
+  };
+
+  const refreshProfileNow = async () => {
+    try {
+      const id = userInfo[0]?.id;
+      if (!id) {
+        throw new Error("User ID not found");
+      }
+
+      await AsyncStorage.removeItem("userInfo");
+
+      const response = await newRequest.get(`/myrecord2/${id}`);
+      const newUserInfo = response.data;
+      console.log("NEWWWW", newUserInfo);
+      setUserInfo(newUserInfo);
+      await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
+
+      Alert.alert(
+        "Notification!",
+        "Profile refresh successful",
+        [
+          {
+            text: "OK",
+            onPress: null,
+          },
+        ],
+        { cancelable: true }
+      );
+    } catch (error) {
+      // console.error("Error updating user info:", error);
+      Alert.alert("Error", "Failed to update user data. Please try again.");
+    }
+  };
+
+  const requestApproval = async () => {
+    // console.log("APPROVA AL");
+    try {
+      const id = userInfo[0]?.id;
+      if (!id) {
+        throw new Error("User ID not found");
+      }
+
+      await AsyncStorage.removeItem("userInfo");
+
+      const response = await newRequest.put(`/approvalRequest/${id}`);
+      const newUserInfo = response.data;
+
+      setUserInfo(newUserInfo);
+      await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
+
+      Alert.alert(
+        "Notification!",
+        "Approval request sent successfully",
+        [
+          {
+            text: "OK",
+            onPress: null,
+          },
+        ],
+        { cancelable: true }
+      );
+    } catch (error) {
+      // console.error("Error updating user info:", error);
+      Alert.alert("Error", "Approval request failed. Please try again later.");
     }
   };
 
@@ -98,6 +174,35 @@ export const GlobalProvider = ({ children }) => {
         fon,
         addy,
       });
+
+      await updateDataInAsyncStorage(id);
+
+      Alert.alert("Success!", response.data, [{ text: "Okay" }], {
+        cancelable: true,
+      });
+      setLoading(false);
+      router.push("/home");
+    } catch (error) {
+      Alert.alert(
+        "Error!!!",
+        error.message || "Failed, please try again",
+        [{ text: "Okay" }],
+        { cancelable: true }
+      );
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const processdates = async (dob) => {
+    setLoading(true);
+
+    try {
+      const id = userInfo[0]?.id;
+      if (!id) throw new Error("User ID not found");
+      console.log("COMING DATES", dob);
+      const response = await newRequest.put(`/updatedates/${id}`, dob);
 
       await updateDataInAsyncStorage(id);
 
@@ -165,42 +270,6 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  // const uploadCertificate = async (selectedImage) => {
-  //   const id = userInfo[0]?.id;
-
-  //   if (!id) {
-  //     // console.error("User ID not available.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const imageUrl = await generateImageLink(selectedImage);
-  //     const response = await newRequest.put(`/uploadcertificate/${id}`, {
-  //       imageUrl,
-  //     });
-
-  //     await updateDataInAsyncStorage(id);
-
-  //     Alert.alert("Success!", response.data, [{ text: "Okay" }], {
-  //       cancelable: true,
-  //     });
-  //     router.push("/home");
-  //   } catch (error) {
-  //     Alert.alert(
-  //       "Error!!!",
-  //       error.message,
-  //       [
-  //         {
-  //           text: "Upload failed, please try again",
-  //           onPress: () => setLoading(false),
-  //         },
-  //       ],
-  //       { cancelable: true }
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const uploadCertificate = async (selectedImage) => {
     const id = userInfo[0]?.id;
 
@@ -209,7 +278,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     try {
-      setLoading(true); // Ensure loading is set at the beginning
+      setLoading(true);
       const imageUrl = await generateImageLink(selectedImage);
       const response = await newRequest.put(`/uploadcertificate/${id}`, {
         imageUrl,
@@ -367,15 +436,7 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const processDeptRank = async (
-    station,
-    postinglg,
-    dept,
-    rank,
-    cadre,
-    gradel,
-    stepp
-  ) => {
+  const processDeptRank = async (station, postinglg, dept, rank) => {
     setLoading(true);
 
     try {
@@ -386,9 +447,6 @@ export const GlobalProvider = ({ children }) => {
         postinglg,
         dept,
         rank,
-        cadre,
-        gradel,
-        stepp,
       });
 
       await updateDataInAsyncStorage(id);
@@ -610,13 +668,18 @@ export const GlobalProvider = ({ children }) => {
       uploadsig,
       uploadpassportnok,
       uploadsignaturenok,
+      processdates,
       setIsLogged,
       setUserInfo,
       setLoading,
       addredepnow,
+      requestApproval,
+      refreshProfileNow,
     }),
     [login, loading, isLogged, userInfo]
   );
+
+  //console.log("USERI FORM", userInfo);
 
   return (
     <GlobalContext.Provider value={contextValue}>

@@ -42,62 +42,60 @@ const Spouse = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.inputTitle}>Spouse full name</Text>
+        <Text style={styles.inputTitle}>Spouse Full Name</Text>
         <TextInput
           maxLength={65}
-          onChangeText={(text) => setSpouseName(text)}
-          autoCapitalize="none"
+          onChangeText={setSpouseName}
           value={spouseName}
           style={styles.input}
-          selectTextOnFocus={false}
+          autoCapitalize="none"
         />
 
-        <Text style={styles.inputTitle}>Spouse phone number </Text>
+        <Text style={styles.inputTitle}>Phone Number</Text>
         <TextInput
-          maxLength={65}
-          onChangeText={(text) => setSpousePhoneNumber(text)}
-          autoCapitalize="none"
+          maxLength={15}
+          onChangeText={setSpousePhoneNumber}
           value={spousePhoneNumber}
           style={styles.input}
-          selectTextOnFocus={false}
+          autoCapitalize="none"
         />
 
-        <Text style={styles.inputTitle}>Spouse Occupation</Text>
+        <Text style={styles.inputTitle}>Occupation</Text>
         <TextInput
           maxLength={65}
-          onChangeText={(text) => setSpouseOccupation(text)}
-          autoCapitalize="none"
+          onChangeText={setSpouseOccupation}
           value={spouseOccupation}
           style={styles.input}
-          selectTextOnFocus={false}
+          autoCapitalize="none"
         />
 
-        <Text style={styles.inputTitle}>Spouse Office address</Text>
+        <Text style={styles.inputTitle}>Office Address</Text>
         <TextInput
-          maxLength={65}
-          onChangeText={(text) => setSpouseOfficeAddress(text)}
-          autoCapitalize="none"
+          maxLength={100}
+          onChangeText={setSpouseOfficeAddress}
           value={spouseOfficeAddress}
           style={styles.input}
-          selectTextOnFocus={false}
+          autoCapitalize="none"
         />
 
-        <TouchableOpacity
-          style={[
-            styles.button,
-            isFormValid() ? styles.buttonEnabled : styles.buttonDisabled,
-          ]}
-          onPress={handleSubmit}
-          disabled={!isFormValid()}
-        >
-          <Text style={styles.buttonText}>
-            {loading ? (
-              <ActivityIndicator size="large" color="yellow" />
-            ) : (
-              "SUBMIT"
-            )}
-          </Text>
-        </TouchableOpacity>
+        {userInfo[0]?.completed < 2 && (
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isFormValid() ? styles.buttonEnabled : styles.buttonDisabled,
+            ]}
+            onPress={handleSubmit}
+            disabled={!isFormValid()}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                "Submit"
+              )}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -109,40 +107,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
+    backgroundColor: "#f4f4f4",
   },
   content: {
-    padding: 30,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   inputTitle: {
-    marginBottom: 10,
-    fontSize: 18,
+    marginBottom: 8,
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
   },
   input: {
-    marginBottom: 30,
-    borderWidth: 0.5,
-    height: 40,
-    padding: 10,
-    borderRadius: 5,
+    marginBottom: 15,
+    height: 45,
+    paddingHorizontal: 15,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    fontSize: 16,
+    color: "#333",
   },
   button: {
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
+    paddingVertical: 12,
     alignItems: "center",
-    backgroundColor: "#999999",
+    borderRadius: 8,
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 20,
+    width: "100%",
   },
   buttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
-    marginRight: 10,
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
   buttonEnabled: {
-    backgroundColor: "green",
+    backgroundColor: "#28a745", // Green for enabled
   },
   buttonDisabled: {
-    backgroundColor: "#999999",
+    backgroundColor: "#999", // Gray for disabled
   },
 });

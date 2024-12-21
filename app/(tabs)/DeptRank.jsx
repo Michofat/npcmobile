@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,235 +15,197 @@ import RNPickerSelect from "react-native-picker-select";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalContext } from "../../context/GlobalProvider";
 
-const DeptRank = () => {
-  const { userInfo, processDeptRank, loading } = useContext(GlobalContext);
-  const [isFocus, setIsFocus] = useState(false);
-  const [deptview, setDeptview] = useState([]);
-  const [stationView, setStationView] = useState([]);
-  const [cadreView, setCadreView] = useState([]);
-  const [rankView, setRankView] = useState([]);
-
-  const [station, setStation] = useState(userInfo[0]?.station);
-  const [postingLg, setPostingLg] = useState(userInfo[0]?.postinglg);
-  const [dept, setDept] = useState(userInfo[0]?.dept);
-  const [rank, setRank] = useState(userInfo[0]?.rank);
-  const [cadre, setCadre] = useState(userInfo[0]?.cadre);
-  const [gradeL, setGradeL] = useState(userInfo[0]?.gradel);
-  const [stepP, setStepP] = useState(userInfo[0]?.stepp);
-
-  const fetchDeptData = async () => {
-    try {
-      const response = await newRequest.get("/fetchdeptrecord");
-      setDeptview(response.data);
-    } catch (error) {
-      // console.error(error);
-    }
-  };
-
-  const fetchRankData = async () => {
-    try {
-      const response = await newRequest.get("/fetchrankrecord");
-      setRankView(response.data);
-    } catch (error) {
-      // console.error(error);
-    }
-  };
-
-  const fetchCadreData = async () => {
-    try {
-      const response = await newRequest.get("/fetchcadrerecord");
-      setCadreView(response.data);
-    } catch (error) {
-      //console.error(error);
-      // Handle error
-    }
-  };
-
-  const fetchStationData = async () => {
-    try {
-      const response = await newRequest.get("/fetchstation");
-      setStationView(response.data);
-    } catch (error) {
-      // console.error(error);
-      // Handle error
-    }
-  };
-
+const useDropdownData = (endpoint) => {
+  const [data, setData] = useState([]);
   useEffect(() => {
-    fetchDeptData();
-    fetchRankData();
-    fetchCadreData();
-    fetchStationData();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(endpoint);
+        setData(response.data);
+      } catch (error) {
+        console.error(`Failed to fetch data from ${endpoint}`, error);
+      }
+    };
+    fetchData();
+  }, [endpoint]);
 
-  const transformedData = (data, labelKey, valueKey) =>
-    data.map((item, index) => ({
-      key: index.toString(),
-      label: item[labelKey],
-      value: item[valueKey],
-    }));
+  return data;
+};
+
+const Dropdown = ({
+  items,
+  value,
+  setValue,
+  label,
+  placeholder,
+  onItemChange,
+}) => {
+  const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <ScrollView style={{ marginTop: Constants.statusBarHeight }}>
-      <Text style={styles.title}>EDIT OFFICE DETAILS</Text>
+    <View style={styles.dropdownContainer}>
+      <Text style={styles.label}>{label}</Text>
+      <RNPickerSelect
+        onValueChange={(selectedValue) => {
+          setValue(selectedValue);
+          onItemChange?.(selectedValue); // Notify parent of the selected value
+        }}
+        items={items}
+        value={value}
+        placeholder={{ label: placeholder, value: null, color: "#9EA0A4" }}
+        onOpen={() => setIsFocus(true)}
+        onClose={() => setIsFocus(false)}
+        style={pickerSelectStyles}
+        useNativeAndroidPickerStyle={false}
+        Icon={() => (
+          <AntDesign
+            name="caretdown"
+            size={20}
+            color={isFocus ? "green" : "black"}
+          />
+        )}
+      />
+    </View>
+  );
+};
+
+const DeptRank = () => {
+  const { userInfo, processDeptRank, loading } = useContext(GlobalContext);
+
+  const [station, setStation] = useState("");
+  const [postingLg, setPostingLg] = useState("");
+  const [dept, setDept] = useState("");
+  const [deptId, setDeptId] = useState(null);
+  const [rank, setRank] = useState("");
+  const [rankView, setRankView] = useState([]);
+
+  const stationView = useDropdownData("/fetchstation");
+  const deptView = useDropdownData("/fetchdeptrecord");
+
+  // Initialize state based on userInfo
+  useEffect(() => {
+    if (userInfo[0]) {
+      const { station, postinglg, dept, rank } = userInfo[0];
+      setStation(station || "");
+      setPostingLg(postinglg || "");
+      setDept(dept || "");
+      setRank(rank || "");
+    }
+  }, [userInfo]);
+
+  // Fetch ranks when deptId changes
+  useEffect(() => {
+    const fetchRanksForDepartment = async () => {
+      if (deptId) {
+        try {
+          const response = await newRequest.get(`/fetchranks/${deptId}`);
+          setRankView(response.data);
+        } catch (error) {
+          console.error("Failed to fetch ranks for department", error);
+        }
+      }
+    };
+    fetchRanksForDepartment();
+  }, [deptId]);
+
+  // Transform data for dropdowns
+  const transformedData = useCallback(
+    (data, labelKey, valueKey) =>
+      data.map((item) => ({
+        key: item.id.toString(),
+        label: item[labelKey],
+        value: item[valueKey],
+      })),
+    []
+  );
+
+  // Update department state dynamically
+  const handleDeptChange = (selectedDeptId) => {
+    const deptIdNumber = parseInt(selectedDeptId, 10); // Convert to number
+    setDeptId(deptIdNumber); // Update department ID
+
+    const selectedDept = deptView.find((item) => item.id === deptIdNumber);
+    if (selectedDept) {
+      setDept(selectedDept.department); // Update department name
+    } else {
+      console.warn("Department not found for ID:", deptIdNumber);
+    }
+  };
+
+  const isFormValid = [station, postingLg, dept, rank].every(Boolean);
+  console.log("Department Data:", deptView);
+
+  return (
+    <ScrollView style={styles.scrollView}>
+      <Text style={styles.title}>Edit Office Details</Text>
       <View style={styles.separator} />
 
       <View style={styles.container}>
-        <Text style={styles.label}>
-          Select your state of posting ({userInfo[0].station})
-        </Text>
-
-        <RNPickerSelect
-          onValueChange={(value) => setStation(value)}
-          items={transformedData(stationView, "ate", "ate") || []}
-          placeholder={{
-            label: isFocus ? "..." : "Select item",
-            value: null,
-            color: "#9EA0A4",
-          }}
-          onOpen={() => setIsFocus(true)}
-          onClose={() => setIsFocus(false)}
-          style={pickerSelectStyles}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => (
-            <AntDesign
-              name="caretdown"
-              size={20}
-              color={isFocus ? "green" : "black"}
-            />
-          )}
+        <Dropdown
+          items={transformedData(stationView, "ate", "ate")}
+          value={station}
+          setValue={setStation}
+          label={`State of Posting (${userInfo[0]?.station || ""})`}
+          placeholder="Select state"
         />
 
-        <Text style={styles.label}>Posting Local Govt. Area</Text>
+        <Text style={styles.title2}>
+          {`Posting LG area (${userInfo[0]?.postinglg || ""})`}
+        </Text>
         <TextInput
           style={styles.input}
-          onChangeText={(text) => setPostingLg(text)}
+          placeholder="Posting Local Govt. Area"
           value={postingLg}
+          onChangeText={setPostingLg}
         />
 
-        <Text style={styles.label}>
-          Select your department ({userInfo[0].dept})
-        </Text>
-        <RNPickerSelect
-          onValueChange={(value) => setDept(value)}
-          items={transformedData(deptview, "dept", "dept")}
-          placeholder={{
-            label: isFocus ? "..." : "Select item",
-            value: null,
-            color: "#9EA0A4",
+        <Dropdown
+          items={transformedData(deptView, "department", "id")}
+          value={deptId} // Pass the department ID directly
+          setValue={(selectedId) => {
+            handleDeptChange(selectedId);
           }}
-          onOpen={() => setIsFocus(true)}
-          onClose={() => setIsFocus(false)}
-          style={pickerSelectStyles}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => (
-            <AntDesign
-              name="caretdown"
-              size={20}
-              color={isFocus ? "green" : "black"}
-            />
-          )}
+          label="Department"
+          placeholder="Select department"
+          onItemChange={(selectedId) => setDeptId(selectedId)} // Update deptId if necessary
         />
 
-        <Text style={styles.label}>Select your rank ({userInfo[0].rank})</Text>
-
-        <RNPickerSelect
-          onValueChange={(value) => setRank(value)}
-          items={transformedData(rankView, "ranc", "ranc")}
-          placeholder={{
-            label: isFocus ? "..." : "Select item",
-            value: null,
-            color: "#9EA0A4",
-          }}
-          onOpen={() => setIsFocus(true)}
-          onClose={() => setIsFocus(false)}
-          style={pickerSelectStyles}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => (
-            <AntDesign
-              name="caretdown"
-              size={20}
-              color={isFocus ? "green" : "black"}
-            />
-          )}
+        <Dropdown
+          items={transformedData(rankView, "designation", "designation")}
+          value={rank}
+          setValue={setRank}
+          label="Rank"
+          placeholder="Select rank"
         />
-
-        <Text style={styles.label}>
-          Select your cadre ({userInfo[0].cadre})
-        </Text>
-        <RNPickerSelect
-          onValueChange={(value) => setCadre(value)}
-          items={transformedData(cadreView, "kadres", "kadres")}
-          placeholder={{
-            label: isFocus ? "..." : "Select item",
-            value: null,
-            color: "#9EA0A4",
-          }}
-          onOpen={() => setIsFocus(true)}
-          onClose={() => setIsFocus(false)}
-          style={pickerSelectStyles}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => (
-            <AntDesign
-              name="caretdown"
-              size={20}
-              color={isFocus ? "green" : "black"}
-            />
-          )}
-        />
-
-        <Text style={styles.label}>Grade level</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setGradeL(text)}
-          value={gradeL}
-          keyboardType="numeric"
-        />
-
-        <Text style={styles.label}>Step</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setStepP(text)}
-          value={stepP}
-          keyboardType="numeric"
-        />
-
-        <TouchableOpacity
-          style={[
-            styles.button,
-            station && postingLg && dept && rank && cadre && gradeL && stepP
-              ? styles.enabled
-              : styles.disabled,
-          ]}
-          onPress={() =>
-            processDeptRank(
-              station,
-              postingLg,
-              dept,
-              rank,
-              cadre,
-              gradeL,
-              stepP
-            )
-          }
-          disabled={
-            !(station && postingLg && dept && rank && cadre && gradeL && stepP)
-          }
-        >
-          <Text style={styles.buttonText}>
-            {loading ? (
-              <ActivityIndicator size="large" color="yellow" />
-            ) : (
-              "SUBMIT"
-            )}
-          </Text>
-        </TouchableOpacity>
+        {userInfo[0]?.completed < 2 && (
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isFormValid ? styles.enabled : styles.disabled,
+            ]}
+            onPress={() =>
+              isFormValid && processDeptRank(station, postingLg, dept, rank)
+            }
+            disabled={!isFormValid}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                "Submit"
+              )}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    marginTop: Constants.statusBarHeight,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -253,36 +215,46 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "green",
     marginHorizontal: 25,
+    marginBottom: 20,
+  },
+  title2: {
+    fontSize: 16,
+    fontWeight: "500",
+    // color: "green",
+    // marginHorizontal: 25,
+    marginVertical: 10,
   },
   separator: {
     borderBottomWidth: 1,
     marginTop: 15,
+    marginBottom: 20,
     width: "100%",
     alignSelf: "center",
   },
   label: {
-    fontSize: 18,
-    // marginTop: 15,
-    marginVertical: 15,
+    fontSize: 16,
     fontWeight: "600",
+    marginVertical: 10,
+    color: "#333",
   },
   input: {
-    marginBottom: 30,
-    marginTop: 10,
+    marginBottom: 20,
     borderWidth: 0.5,
     height: 40,
     padding: 10,
+    borderRadius: 5,
+    borderColor: "#ddd",
+    color: "#333",
   },
   button: {
     height: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
-    marginTop: 30,
-    backgroundColor: "green",
+    marginTop: 20,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     color: "white",
   },
@@ -292,6 +264,9 @@ const styles = StyleSheet.create({
   disabled: {
     backgroundColor: "#999999",
   },
+  dropdownContainer: {
+    marginBottom: 20,
+  },
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -300,7 +275,7 @@ const pickerSelectStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: Platform.OS === "ios" ? 12 : 8,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#ddd",
     borderRadius: 4,
     color: "black",
     paddingRight: 30,

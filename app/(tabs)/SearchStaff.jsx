@@ -24,8 +24,13 @@ const SearchStaff = ({ navigation }) => {
   const [fulldata, setFullData] = useState([]);
   const [error, setError] = useState(null);
 
-  const handlenavigation = (userid) => {
-    router.push("ViewProfile", { userid });
+  const handlenavigation = (email) => {
+    console.log("SENDING ID", email);
+    // router.push("ViewProfile", { email });
+    router.push({
+      pathname: "ViewProfile",
+      params: { email },
+    });
   };
 
   useEffect(() => {
@@ -36,8 +41,9 @@ const SearchStaff = ({ navigation }) => {
     setIsLoading(true);
     try {
       const response = await newRequest.get("/allstaffbrief");
-      setData(response.data);
-      setFullData(response.data);
+      const responseData = response.data;
+      setData(responseData);
+      setFullData(responseData);
       setIsLoading(false);
     } catch (error) {
       setError(error);
@@ -54,12 +60,21 @@ const SearchStaff = ({ navigation }) => {
     setData(filteredData.slice(0, 20));
   };
 
+  // const contains = ({ fullname, emal }, query) => {
+  //   if (fullname.includes(query) || emal.includes(query)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
   const contains = ({ fullname, emal }, query) => {
-    if (fullname.includes(query) || emal.includes(query)) {
+    if (
+      (fullname && fullname.toLowerCase().includes(query)) ||
+      (emal && emal.toLowerCase().includes(query))
+    ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   if (isLoading) {
@@ -110,7 +125,7 @@ const SearchStaff = ({ navigation }) => {
                 {userInfo[0].role === 1 && (
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => handlenavigation(item.id)}
+                    onPress={() => handlenavigation(item.emal)}
                   >
                     <Text style={styles.buttonText}>View Profile</Text>
                   </TouchableOpacity>

@@ -83,7 +83,7 @@ const AddRedeployment = () => {
     desigpost.length > 2;
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <FormField
           title="Station of redeployment"
@@ -110,7 +110,7 @@ const AddRedeployment = () => {
                 placeholder="00-00-0000"
                 value={datered} // Bind to `datered`
                 onChangeText={setDatered}
-                placeholderTextColor="#11182744"
+                placeholderTextColor="#B0B0B0"
                 editable={false}
                 onPressIn={toggleDateredPicker}
               />
@@ -122,7 +122,7 @@ const AddRedeployment = () => {
                 style={[styles.button, styles.cancelButton]}
                 onPress={toggleDateredPicker}
               >
-                <Text style={[styles.buttonText, { color: "#075985" }]}>
+                <Text style={[styles.buttonText, { color: "#FF6B6B" }]}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -155,7 +155,7 @@ const AddRedeployment = () => {
                 placeholder="00-00-0000"
                 value={datexit} // Bind to `datexit`
                 onChangeText={setDatexit}
-                placeholderTextColor="#11182744"
+                placeholderTextColor="#B0B0B0"
                 editable={false}
                 onPressIn={toggleDatexitPicker}
               />
@@ -167,7 +167,7 @@ const AddRedeployment = () => {
                 style={[styles.button, styles.cancelButton]}
                 onPress={toggleDatexitPicker}
               >
-                <Text style={[styles.buttonText, { color: "#075985" }]}>
+                <Text style={[styles.buttonText, { color: "#FF6B6B" }]}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -196,7 +196,7 @@ const AddRedeployment = () => {
           disabled={!isFormValid || loading}
         >
           {loading ? (
-            <ActivityIndicator size="large" color="yellow" />
+            <ActivityIndicator size="large" color="white" />
           ) : (
             <Text style={styles.buttonText}>SUBMIT</Text>
           )}
@@ -224,51 +224,69 @@ export default AddRedeployment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    backgroundColor: "#F9F9F9",
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 20,
   },
   inputTitle: {
-    marginBottom: 5,
-    fontSize: 18,
+    marginBottom: 8,
+    fontSize: 16,
+    color: "#333",
   },
   input: {
-    marginBottom: 30,
+    backgroundColor: "#fff",
     borderWidth: 0.5,
-    height: 40,
-    padding: 10,
-    borderRadius: 5,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    height: 45,
+    paddingLeft: 12,
+    marginBottom: 20,
+    fontSize: 16,
+    color: "#333",
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
   },
   button: {
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    alignItems: "center",
+    borderRadius: 8,
+    paddingVertical: 8, // Reduced padding for a smaller button
     justifyContent: "center",
-    alignSelf: "center",
-    marginTop: 15,
-    width: "80%",
+    alignItems: "center",
+    marginTop: 10,
+    width: "48%", // Fit buttons within available width
   },
   enabledButton: {
-    backgroundColor: "green",
+    backgroundColor: "#28a745",
   },
   disabledButton: {
-    backgroundColor: "#999999",
+    backgroundColor: "#cccccc",
   },
   buttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "600",
   },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginBottom: 15,
   },
   cancelButton: {
-    backgroundColor: "transparent",
-    padding: 5,
+    backgroundColor: "#FFF",
   },
   confirmButton: {
-    backgroundColor: "#075985",
-    padding: 5,
+    backgroundColor: "#28abbb",
+  },
+  datePicker: {
+    width: "100%",
+    backgroundColor: "#fff",
   },
 });

@@ -24,12 +24,13 @@ const Qualifications = () => {
   return (
     <ScrollView style={{ marginTop: Constants.statusBarHeight }}>
       <View style={styles.container}>
-        <Text style={{ fontSize: 30, marginBottom: 10 }}>
+        <Text style={styles.header}>
           Academic & Professional Qualifications
         </Text>
-        <Text style={styles.inputtitle}>Secondary education</Text>
-        <Text style={styles.inputtitle2}>
-          Name of school, address and certificate obtained
+
+        <Text style={styles.inputTitle}>Secondary Education</Text>
+        <Text style={styles.inputSubtitle}>
+          Name of school, address, year of completion, and certificate obtained.
         </Text>
         <TextInput
           editable
@@ -38,13 +39,14 @@ const Qualifications = () => {
           maxLength={400}
           onChangeText={(text) => setAcadsecondary(text)}
           value={acadsecondary}
-          style={styles.input2}
+          style={styles.input}
+          placeholder="Enter details"
         />
 
-        <Text style={styles.inputtitle}>Tertiary education (optional)</Text>
-        <Text style={styles.inputtitle2}>
-          Name of institution, address, course of study, year of graduation,
-          certificate obtained on a new line
+        <Text style={styles.inputTitle}>Tertiary Education (Optional)</Text>
+        <Text style={styles.inputSubtitle}>
+          Name of institution, address, course of study, year of graduation, and
+          certificate obtained.
         </Text>
         <TextInput
           editable
@@ -53,13 +55,14 @@ const Qualifications = () => {
           maxLength={400}
           onChangeText={(text) => setAcadtertiary(text)}
           value={acadtertiary}
-          style={styles.input2}
+          style={styles.input}
+          placeholder="Enter details"
         />
 
-        <Text style={styles.inputtitle}>Masters education (optional)</Text>
-        <Text style={styles.inputtitle2}>
-          Name of institution, address, course of study, year of graduation,
-          certificate obtained on a new line
+        <Text style={styles.inputTitle}>Masters Education (Optional)</Text>
+        <Text style={styles.inputSubtitle}>
+          Name of institution, address, course of study, year of graduation, and
+          certificate obtained.
         </Text>
         <TextInput
           editable
@@ -68,13 +71,14 @@ const Qualifications = () => {
           maxLength={400}
           onChangeText={(text) => setAcadmasters(text)}
           value={acadmasters}
-          style={styles.input2}
+          style={styles.input}
+          placeholder="Enter details"
         />
 
-        <Text style={styles.inputtitle}>PhD education (optional)</Text>
-        <Text style={styles.inputtitle2}>
-          Name of institution, address, course of study, year of graduation,
-          certificate obtained on a new line.
+        <Text style={styles.inputTitle}>PhD Education (Optional)</Text>
+        <Text style={styles.inputSubtitle}>
+          Name of institution, address, course of study, year of graduation, and
+          certificate obtained.
         </Text>
         <TextInput
           editable
@@ -83,17 +87,16 @@ const Qualifications = () => {
           maxLength={400}
           onChangeText={(text) => setAcadphd(text)}
           value={acadphd}
-          style={styles.input2}
+          style={styles.input}
+          placeholder="Enter details"
         />
 
-        <Text style={styles.inputtitle3}>
-          Professional bodies & certifications (optional)
+        <Text style={styles.inputTitle}>
+          Professional Certifications (Optional)
         </Text>
-        <Text style={styles.inputtitle2}>
-          CERTIFICATION - AWARDING BODY - YEAR JOINED - YEAR AWARDED each on a
-          new line.
+        <Text style={styles.inputSubtitle}>
+          Certification, awarding body, year joined, and year awarded.
         </Text>
-        <Text style={styles.inputtitle2}></Text>
         <TextInput
           editable
           multiline
@@ -101,17 +104,18 @@ const Qualifications = () => {
           maxLength={400}
           onChangeText={(text) => setProff(text)}
           value={proff}
-          style={styles.input2}
+          style={styles.input}
+          placeholder="Enter details"
         />
 
-        <TouchableOpacity
-          style={[
-            styles.link,
-            acadsecondary && proff ? styles.enbutton : styles.disbutton,
-          ]}
-        >
-          <Text
-            style={styles.opac}
+        {userInfo[0]?.completed < 2 && (
+          <TouchableOpacity
+            style={[
+              styles.submitButton,
+              acadsecondary && proff
+                ? styles.enabledButton
+                : styles.disabledButton,
+            ]}
             onPress={() => {
               updatequal(
                 acadsecondary,
@@ -121,15 +125,17 @@ const Qualifications = () => {
                 proff
               );
             }}
-            disabled={acadsecondary && proff ? false : true}
+            disabled={!(acadsecondary && proff)}
           >
-            {loading ? (
-              <ActivityIndicator size="large" color="yellow" />
-            ) : (
-              "SUBMIT"
-            )}
-          </Text>
-        </TouchableOpacity>
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator size="large" color="#fff" />
+              ) : (
+                "Submit"
+              )}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -140,46 +146,57 @@ export default Qualifications;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
+    padding: 20,
+    backgroundColor: "#f9f9f9",
   },
-  inputtitle: { marginBottom: 5, fontSize: 18 },
-  inputtitle3: { marginBottom: 5, fontSize: 18, fontWeight: "700" },
-  inputtitle2: { marginBottom: 25, fontSize: 14, color: "green" },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#333",
+  },
+  inputTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#444",
+    marginBottom: 5,
+  },
+  inputSubtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 10,
+  },
   input: {
-    marginBottom: 30,
-    borderWidth: 0.5,
-    height: 40,
-    padding: 10,
-    borderRadius: 5,
-  },
-  input2: {
-    marginBottom: 30,
-    borderWidth: 0.5,
-    padding: 10,
-    borderRadius: 5,
-  },
-  opac: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-
-  link: {
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    alignItems: "center",
-    backgroundColor: "#999999",
-  },
-  containerx: {
     backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  submitButton: {
+    padding: 15,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: 20,
   },
-  textFailed: {
-    alignSelf: "flex-end",
-    color: "red",
+  enabledButton: {
+    backgroundColor: "#28a745",
   },
-  enbutton: { backgroundColor: "green" },
-  disbutton: { backgroundColor: "#999999" },
+  disabledButton: {
+    backgroundColor: "#cccccc",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+  },
 });

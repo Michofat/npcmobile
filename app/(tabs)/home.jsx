@@ -1,13 +1,16 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, ScrollView, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useUserInfo } from "../../hooks/useUserInfo";
 import CardItem from "../../components/CardItem";
 import { router } from "expo-router";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { GlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
   const {
+    id,
     fullname,
     compchpass,
     comppersonal,
@@ -22,9 +25,35 @@ const Home = () => {
     compnokpass,
     compnoksign,
     completed,
+    finall,
+    compdates,
   } = useUserInfo();
+  const { bringInfo } = useContext(GlobalContext);
 
-  //console.log("ccc", comppersonal);
+  //console.log("ccc", finall);
+
+  const refresher = () => {
+    Alert.alert(
+      "Notification!",
+      "You are about to reload your profile. Click OK to continue",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            // console.log("Canceled");
+          },
+          style: "cancel", // Adds emphasis to the cancel button
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            bringInfo(id);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   const cardDetails = [
     {
@@ -38,6 +67,12 @@ const Home = () => {
       title: "Personal",
       condition: comppersonal,
       href: "BioData",
+    },
+    {
+      id: 34,
+      title: "Date Form",
+      condition: compdates,
+      href: "DateForm",
     },
     { id: 2, title: "Office", condition: compoffice, href: "DeptRank" },
     {
@@ -103,12 +138,53 @@ const Home = () => {
           <Text
             style={[
               styles.profileStatusValue,
-              { color: completed ? "green" : "red" },
+              {
+                color:
+                  completed === 0
+                    ? "red"
+                    : completed === 1
+                    ? "blue"
+                    : completed === 2
+                    ? "green"
+                    : "black", // Default color for unexpected values
+              },
             ]}
           >
-            {completed ? "Completed" : "Not Completed"}
+            {completed === 0
+              ? "Not Completed"
+              : completed === 1
+              ? "Preview and submit"
+              : completed === 2
+              ? "Awaiting Approval"
+              : completed === 3
+              ? "Approved"
+              : "Unknown Status"}
           </Text>
         </View>
+        {completed === 0 ? (
+          <TouchableOpacity style={styles.opac} onPress={refresher}>
+            <Text style={styles.optext}>Refresh profile</Text>
+          </TouchableOpacity>
+        ) : completed === 1 ? (
+          <TouchableOpacity
+            style={styles.opac}
+            onPress={() => router.push("/preview")}
+          >
+            <Text style={styles.optext}>Preview profile</Text>
+          </TouchableOpacity>
+        ) : completed === 2 ? (
+          <TouchableOpacity style={styles.opac}>
+            <Text style={styles.optext}>Request processing</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.opac}
+            // onPress={() => router.push("/preview")}
+          >
+            <Text style={styles.optext}>Profile Approved</Text>
+          </TouchableOpacity>
+        )}
+
         <View style={styles.cardsContainer}>
           {cardDetails.map(({ id, title, condition, href }) => (
             <CardItem
@@ -155,6 +231,16 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     marginTop: 16,
+  },
+
+  opac: {
+    backgroundColor: "#FF9C01",
+    padding: 10,
+  },
+  optext: {
+    alignSelf: "center",
+    fontSize: 25,
+    fontWeight: "700",
   },
 });
 

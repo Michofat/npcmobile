@@ -25,9 +25,9 @@ const BankPen = () => {
   return (
     <ScrollView style={{ marginTop: Constants.statusBarHeight }}>
       <View style={styles.container}>
-        <InputField title="Bank name" value={bnk} onChangeText={setBnk} />
+        <InputField title="Bank Name" value={bnk} onChangeText={setBnk} />
         <InputField
-          title="Account number"
+          title="Account Number"
           value={accno}
           onChangeText={setAccno}
         />
@@ -37,18 +37,21 @@ const BankPen = () => {
           onChangeText={setPfaname}
         />
         <InputField title="PFA PIN" value={pfapin} onChangeText={setPfapin} />
-        <TouchableOpacity
-          style={[styles.link, styles.enbutton]}
-          onPress={handleSubmit}
-        >
-          <Text style={styles.opac}>
-            {loading ? (
-              <ActivityIndicator size="large" color="yellow" />
-            ) : (
-              "SUBMIT"
-            )}
-          </Text>
-        </TouchableOpacity>
+        {userInfo[0]?.completed < 2 && (
+          <TouchableOpacity
+            style={[styles.button, styles.buttonEnabled]}
+            onPress={handleSubmit}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                "Submit"
+              )}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -59,13 +62,28 @@ export default BankPen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 30,
+    backgroundColor: "#f7f7f7",
   },
-
-  opac: {
+  button: {
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    width: "100%",
+  },
+  buttonEnabled: {
+    backgroundColor: "#28a745", // Green for enabled button
+  },
+  buttonText: {
     color: "white",
-    fontSize: 20,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "600",
   },
   link: {
     borderWidth: 1,
@@ -74,7 +92,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#999999",
   },
-  enbutton: {
-    backgroundColor: "green",
+  opac: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "700",
   },
 });

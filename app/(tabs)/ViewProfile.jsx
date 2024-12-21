@@ -13,15 +13,21 @@ import { newRequest } from "../../utils/newRequest";
 import { useLocalSearchParams } from "expo-router";
 
 export default function ViewProfile() {
-  const { userid } = useLocalSearchParams();
+  //const { email } = useLocalSearchParams();
 
-  const [userdetails, setUserDetails] = useState({});
+  const params = useLocalSearchParams();
+  const email = params.email;
+
+  //console.log("Received email in ViewProfile:", email);
+
+  const [userdetails, setUserDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log("USERDETAILS", userdetails);
   const getRecord = async () => {
     try {
-      const response = await newRequest.get(`/myrecord/${userid}`);
-      setUserDetails(response.data);
+      const response = await newRequest.get(`/myrecord3/${email}`);
+      const reponseData = response.data;
+      setUserDetails(reponseData);
       setIsLoading(false);
     } catch (error) {
       alert(error.response.data);
@@ -31,13 +37,58 @@ export default function ViewProfile() {
 
   useEffect(() => {
     getRecord();
-  }, []);
+  }, [email]);
+
+  const {
+    fullname,
+    titl,
+    pix,
+    rank,
+    sex,
+    marit,
+    dob,
+    orig,
+    lga,
+    station,
+    dfirstappt,
+    dconfirm,
+    dpreappt,
+    dept,
+    retirewhy,
+    retireyear,
+    signn,
+    pfaname,
+    pfapin,
+    ippisno,
+    bnk,
+    accno,
+    acadsecondary,
+    acadtertiary,
+    acadmasters,
+    acadphd,
+    proff,
+    fon,
+    fonb,
+    emal,
+    addy,
+    spousename,
+    spouseoccup,
+    spouseoffice,
+    nok,
+    nokwho,
+    nokfon,
+    nokaddy,
+    nok2,
+    nok2who,
+    nok2fon,
+    nok2addy,
+    siggn,
+  } = userdetails[0] || {};
+
+  const titl2 = titl === null ? "" : titl;
 
   return (
     <ScrollView>
-      <View style={{ alignItems: "center", padding: 15 }}>
-        <Text style={{ fontSize: 30 }}>Please check back later</Text>
-      </View>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator
@@ -53,103 +104,84 @@ export default function ViewProfile() {
               style={styles.imageBackground}
               source={require("../../assets/npcbuild.jpg")}
             >
-              <Image
-                style={styles.profileImage}
-                source={{ uri: userdetails[0].pix }}
-              />
+              <Image style={styles.profileImage} source={{ uri: pix }} />
             </ImageBackground>
-            <Text style={styles.fullName}>
-              {userdetails[0].titl + " " + userdetails[0].fullname}
-            </Text>
-            <Text style={styles.rank}>{userdetails[0].rank}</Text>
+            <Text style={styles.fullName}>{titl2 + " " + fullname}</Text>
+            <Text style={styles.rank}>{rank}</Text>
             {renderInfoSection("user", [
-              { title: "Gender", value: userdetails[0].sex },
-              { title: "Marital status", value: userdetails[0].marit },
-              { title: "Date of birth", value: userdetails[0].dob },
-              { title: "State of origin", value: userdetails[0].orig },
-              { title: "Local Government Area", value: userdetails[0].lga },
+              { title: "Gender", value: sex },
+              { title: "Marital status", value: marit },
+              { title: "Date of birth", value: dob },
+              { title: "State of origin", value: orig },
+              { title: "Local Government Area", value: lga },
             ])}
             {renderInfoSection("home", [
-              { title: "Station", value: userdetails[0].station },
+              { title: "Station", value: station },
               {
                 title: "Date of first appointment",
-                value: userdetails[0].dfirstappt,
+                value: dfirstappt,
               },
-              { title: "Date of confirmation", value: userdetails[0].dconfirm },
+              { title: "Date of confirmation", value: dconfirm },
               {
                 title: "Date of present appointment",
-                value: userdetails[0].dpreappt,
+                value: dpreappt,
               },
-              { title: "Department", value: userdetails[0].dept },
-              { title: "Rank", value: userdetails[0].rank },
+              { title: "Department", value: dept },
+              { title: "Rank", value: rank },
               {
-                title: "Retirement (" + userdetails[0].retirewhy + ")",
-                value: userdetails[0].retireyear,
+                title: "Retirement (" + retirewhy + ")",
+                value: retireyear,
               },
               {
                 title: "Signature",
                 value: (
-                  <Image
-                    style={styles.signature}
-                    source={{ uri: userdetails[0].siggn }}
-                  />
+                  <Image style={styles.signature} source={{ uri: siggn }} />
                 ),
               },
             ])}
             {renderInfoSection("book", [
-              { title: "PFA name", value: userdetails[0].pfaname },
-              { title: "PFA PIN", value: userdetails[0].pfapin },
-              { title: "IPPIS number", value: userdetails[0].ippisno },
-              { title: "Bank name", value: userdetails[0].bnk },
-              { title: "Account number", value: userdetails[0].accno },
+              { title: "PFA name", value: pfaname },
+              { title: "PFA PIN", value: pfapin },
+              { title: "IPPIS number", value: ippisno },
+              { title: "Bank name", value: bnk },
+              { title: "Account number", value: accno },
             ])}
             {renderInfoSection("edit", [
               {
                 title: "Secondary school attended name",
-                value: userdetails[0].acadsecondary,
+                value: acadsecondary,
               },
               {
                 title: "Tertiary education",
-                value: userdetails[0].acadtertiary,
+                value: acadtertiary,
               },
-              { title: "Masters", value: userdetails[0].acadmasters },
-              { title: "PhD", value: userdetails[0].acadphd },
+              { title: "Masters", value: acadmasters },
+              { title: "PhD", value: acadphd },
               {
                 title: "Professional qualifications",
-                value: userdetails[0].proff,
+                value: proff,
               },
             ])}
             {renderInfoSection("mail", [
-              { title: "Mobile 1", value: userdetails[0].fon },
-              { title: "Mobile 2", value: userdetails[0].fonb },
-              { title: "Email address", value: userdetails[0].emal },
-              { title: "Address", value: userdetails[0].addy },
+              { title: "Mobile 1", value: fon },
+              { title: "Mobile 2", value: fonb },
+              { title: "Email address", value: emal },
+              { title: "Address", value: addy },
             ])}
             {renderInfoSection("edit", [
-              { title: "Spouse name", value: userdetails[0].spousename },
-              { title: "Occupation", value: userdetails[0].spouseoccup },
-              { title: "Office", value: userdetails[0].spouseoffice },
+              { title: "Spouse name", value: spousename },
+              { title: "Occupation", value: spouseoccup },
+              { title: "Office", value: spouseoffice },
             ])}
             {renderInfoSection("file1", [
-              { title: "Next of kin", value: userdetails[0].nok },
-              { title: "Relationship", value: userdetails[0].nokwho },
-              { title: "Phone number", value: userdetails[0].nokfon },
-              { title: "Address", value: userdetails[0].nokaddy },
-              { title: "Next of kin 2", value: userdetails[0].nok2 },
-              { title: "Relationship", value: userdetails[0].nok2who },
-              { title: "Phone number", value: userdetails[0].nok2fon },
-              { title: "Address", value: userdetails[0].nok2addy },
-            ])}
-            {renderInfoSection("book", [
-              {
-                title: "Marriage certificate",
-                value: (
-                  <Image
-                    style={styles.marriageCertificate}
-                    source={{ uri: userdetails[0].mcert }}
-                  />
-                ),
-              },
+              { title: "Next of kin", value: nok },
+              { title: "Relationship", value: nokwho },
+              { title: "Phone number", value: nokfon },
+              { title: "Address", value: nokaddy },
+              { title: "Next of kin 2", value: nok2 },
+              { title: "Relationship", value: nok2who },
+              { title: "Phone number", value: nok2fon },
+              { title: "Address", value: nok2addy },
             ])}
           </View>
         )
@@ -163,7 +195,6 @@ const renderInfoSection = (iconName, infoItems) => {
     <>
       {infoItems.map((item, index) => (
         <View key={index} style={styles.infoContainer}>
-          <AntDesign name={iconName} size={28} color="green" />
           <View style={styles.rightData}>
             <Text style={styles.textTitle}>{item.title}</Text>
             <Text style={styles.textValue}>{item.value}</Text>

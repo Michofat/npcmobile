@@ -141,24 +141,25 @@ const Nok = () => {
           style={styles.input}
           selectTextOnFocus={false}
         />
-
-        <TouchableOpacity
-          style={[
-            styles.button,
-            isFormValid() ? styles.buttonEnabled : styles.buttonDisabled,
-          ]}
-          onPress={handleSubmit}
-          disabled={!isFormValid()}
-        >
-          <Text style={styles.buttonText}>
-            {" "}
-            {loading ? (
-              <ActivityIndicator size="large" color="yellow" />
-            ) : (
-              "SUBMIT"
-            )}
-          </Text>
-        </TouchableOpacity>
+        {userInfo[0]?.completed < 2 && (
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isFormValid() ? styles.buttonEnabled : styles.buttonDisabled,
+            ]}
+            onPress={handleSubmit}
+            disabled={!isFormValid()}
+          >
+            <Text style={styles.buttonText}>
+              {" "}
+              {loading ? (
+                <ActivityIndicator size="large" color="yellow" />
+              ) : (
+                "SUBMIT"
+              )}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -169,39 +170,55 @@ export default Nok;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    padding: 20,
+    backgroundColor: "#f9f9f9",
   },
   title: {
-    fontSize: 24,
-    marginBottom: 15,
-    fontWeight: "700",
+    fontSize: 26,
+    marginBottom: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#333",
+  },
+  inputtitle: {
+    fontSize: 14,
+    marginBottom: 5,
+    fontWeight: "500",
+    color: "#555",
   },
   input: {
-    marginBottom: 30,
-    borderWidth: 0.5,
-    height: 40,
-    padding: 10,
-    borderRadius: 5,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    height: 45,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    fontSize: 16,
   },
   button: {
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 8,
+    padding: 15,
     alignItems: "center",
-    backgroundColor: "#999999",
+    backgroundColor: "#4CAF50", // Default green button
     flexDirection: "row",
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
     marginRight: 10,
   },
   buttonEnabled: {
-    backgroundColor: "green",
+    backgroundColor: "#28a745", // Brighter green for enabled state
   },
   buttonDisabled: {
-    backgroundColor: "#999999",
+    backgroundColor: "#ddd", // Gray for disabled state
+  },
+  divider: {
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    marginVertical: 20,
   },
 });
