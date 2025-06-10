@@ -13,16 +13,16 @@ const iconMap = {
   Personal: <FontAwesome name="user" size={24} color="#333" />,
   Office: <FontAwesome name="building" size={24} color="#333" />,
   Qualifications: <Ionicons name="school" size={24} color="#333" />,
-  Certificate: <MaterialIcons name="verified" size={24} color="#333" />,
+  Certificates: <MaterialIcons name="verified" size={24} color="#333" />,
   Spouse: <FontAwesome name="heart" size={24} color="#333" />,
   "Next-of-Kin": <FontAwesome name="users" size={24} color="#333" />,
   "Bank & Pension": <FontAwesome name="money" size={24} color="#333" />,
-  "Profile Picture": <Ionicons name="image" size={24} color="#333" />,
+  "Profile Picture Upload": <Ionicons name="image" size={24} color="#333" />,
   "Change Password": <FontAwesome name="lock" size={24} color="#333" />,
   "Date Form": <FontAwesome name="calendar" size={24} color="#333" />,
   "My Signature": <FontAwesome name="pencil" size={24} color="#333" />,
-  "NoK Passport": <FontAwesome name="image" size={24} color="#333" />,
-  "NoK Signature": <FontAwesome name="pencil" size={24} color="#333" />,
+  "NoK Passport": <FontAwesome name="passport" size={24} color="#333" />,
+  "NoK Signature": <FontAwesome name="signature" size={24} color="#333" />,
 };
 
 const CardItem = ({ title, condition, handlePress }) => {
@@ -45,10 +45,10 @@ const CardItem = ({ title, condition, handlePress }) => {
 
 const styles = StyleSheet.create({
   card: {
-    // allows 3 in a row + some spacing
-    aspectRatio: 1,
-    marginVertical: 10,
-    marginHorizontal: "1.9%", // helps to create consistent spacing
+    width: "30%",
+    height: 100, // or 110, 120 based on how spacious you want
+    marginVertical: 8,
+    marginHorizontal: "1.5%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,

@@ -25,7 +25,6 @@ const Home = () => {
     compnokpass,
     compnoksign,
     completed,
-    finall,
     compdates,
   } = useUserInfo();
   const { bringInfo } = useContext(GlobalContext);
@@ -83,7 +82,7 @@ const Home = () => {
     },
     {
       id: 4,
-      title: "Certificates",
+      title: "Certificate",
       condition: compcert,
       href: "Certificates",
     },
@@ -102,7 +101,7 @@ const Home = () => {
     },
     {
       id: 8,
-      title: "Profile Picture Upload",
+      title: "Profile Picture",
       condition: compmypass,
       href: "UpdatePassport",
     },
@@ -230,8 +229,19 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   cardsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     marginTop: 16,
+    paddingHorizontal: 8,
   },
+
+  // cardsContainer: {
+  //   flexDirection: "row",
+  //   flexWrap: "wrap",
+  //   justifyContent: "space-between",
+  //   marginTop: 16,
+  // },
 
   opac: {
     backgroundColor: "#FF9C01",

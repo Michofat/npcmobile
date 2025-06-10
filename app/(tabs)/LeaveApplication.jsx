@@ -241,7 +241,7 @@ const LeaveApplication = () => {
           {isLoading ? (
             <ActivityIndicator size="large" color="white" />
           ) : (
-            "SUBMIT"
+            "Submit"
           )}
         </Text>
       </TouchableOpacity>

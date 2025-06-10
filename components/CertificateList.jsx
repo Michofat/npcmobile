@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     elevation: 5, // Add elevation for a shadow effect
   },
   image: {
-    width: "100%", // Take up the entire width of the container
-    height: 200, // Adjust the height as needed
-    aspectRatio: 16 / 9, // Adjust aspect ratio to maintain image proportions
+    width: "100%",
+    height: 200,
+    aspectRatio: 16 / 9,
   },
 });
 

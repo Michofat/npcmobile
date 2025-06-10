@@ -101,7 +101,7 @@ const ChangePassword = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Enter current password"
+            // placeholder="Enter current password"
             secureTextEntry={!isOldPasswordVisible}
             value={oldPassword}
             onChangeText={setOldPassword}
@@ -125,7 +125,7 @@ const ChangePassword = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Enter new password"
+            // placeholder="Enter new password"
             secureTextEntry={!isNewPasswordVisible}
             value={newPassword}
             onChangeText={setNewPassword}
@@ -149,7 +149,7 @@ const ChangePassword = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Confirm new password"
+            //  placeholder="Confirm new password"
             secureTextEntry={!isConfirmPasswordVisible}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#14452F",
+    backgroundColor: "green",
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: "center",

@@ -86,7 +86,7 @@ const AddRedeployment = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <FormField
-          title="Station of redeployment"
+          title="Station of Redeployment"
           value={newstation}
           onChangeText={setNewstation}
         />
@@ -255,13 +255,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   button: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 8, // Reduced padding for a smaller button
+    // borderWidth: 1,
+    // borderRadius: 8,
+    // paddingVertical: 8,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // marginTop: 10,
+    // width: "48%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 8,
     marginTop: 10,
-    width: "48%", // Fit buttons within available width
+    marginBottom: 15,
   },
   enabledButton: {
     backgroundColor: "#28a745",

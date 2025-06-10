@@ -79,7 +79,7 @@ export default function NokSignature() {
             style={styles.replaceButton}
             onPress={handleImageSelect}
           >
-            <Text style={styles.replaceButtonText}>Replace image</Text>
+            <Text style={styles.replaceButtonText}>Replace</Text>
             {loading && <ActivityIndicator size="large" color="yellow" />}
           </TouchableOpacity>
         </>

@@ -50,7 +50,7 @@ export default function UpdatePassport() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upload passport</Text>
+      <Text style={styles.title}>Passport Upload</Text>
       {selectedImage ? (
         <>
           <Image source={{ uri: selectedImage }} style={styles.image} />
@@ -87,7 +87,7 @@ export default function UpdatePassport() {
               {loading ? (
                 <ActivityIndicator size="large" color="yellow" />
               ) : (
-                "Replace Image"
+                "Replace"
               )}
             </Text>
           </TouchableOpacity>

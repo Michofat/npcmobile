@@ -2,7 +2,7 @@
   "expo": {
     "name": "npchurismobile",
     "slug": "npchurismobile",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,15 +16,19 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.coinmac.npchuris",
-      "buildNumber": "1.0.16"
+      "buildNumber": "1.0.17"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.coinmac.npchuris",
-      "versionCode": 16
+      "permissions": [
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA"
+      ],
+      "package": "com.michofat.npchuris",
+      "versionCode": 17
     },
     "web": {
       "favicon": "./assets/favicon.png"

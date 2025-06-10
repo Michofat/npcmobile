@@ -48,8 +48,9 @@ const Nok = () => {
   return (
     <ScrollView style={{ marginTop: Constants.statusBarHeight }}>
       <View style={styles.container}>
-        <Text style={styles.title}>NEXT-OF-KIN EDIT</Text>
+        <Text style={styles.title}>Next-of-Kin Edit</Text>
 
+        <Text style={styles.inputtitle}>Primary Nok (Full Name) </Text>
         <TextInput
           maxLength={65}
           onChangeText={(text) => setNok(text)}
@@ -155,7 +156,7 @@ const Nok = () => {
               {loading ? (
                 <ActivityIndicator size="large" color="yellow" />
               ) : (
-                "SUBMIT"
+                "Submit"
               )}
             </Text>
           </TouchableOpacity>

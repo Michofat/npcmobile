@@ -51,7 +51,7 @@ export default function NokPassport() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Upload Next-of-Kin Passport</Text>
+      <Text style={styles.headerText}>Upload Passport</Text>
       {selectedImage ? (
         <>
           <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
@@ -81,7 +81,7 @@ export default function NokPassport() {
             style={styles.selectButton}
             onPress={handleImageSelect}
           >
-            <Text style={styles.selectButtonText}>Replace image</Text>
+            <Text style={styles.selectButtonText}>Replace</Text>
             {loading && <ActivityIndicator size="large" color="yellow" />}
           </TouchableOpacity>
         </>
