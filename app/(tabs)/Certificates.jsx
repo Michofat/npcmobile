@@ -25,15 +25,17 @@ export default function Certificates(props) {
 
   const userId = userInfo[0]?.id;
 
+  const fetchCertificates = async () => {
+    try {
+      const response = await newRequest.get(`/mycerti/${userId}`);
+      setCertificates(response?.data);
+    } catch (error) {
+      alert(error.response?.data || "Error fetching certificates");
+    }
+  };
+
+  // run once on mount
   useEffect(() => {
-    const fetchCertificates = async () => {
-      try {
-        const response = await newRequest.get(`/mycerti/${userId}`);
-        setCertificates(response?.data);
-      } catch (error) {
-        alert(error.response.data);
-      }
-    };
     fetchCertificates();
   }, []);
 
@@ -69,13 +71,20 @@ export default function Certificates(props) {
 
   const handleUpload = async () => {
     try {
-      const isSuccess = await uploadCertificate(selectedImage); // Call uploadCertificate and check if it's successful
+      const isSuccess = await uploadCertificate(selectedImage);
       if (isSuccess) {
-        setSelectedImage(null); // Clear the selected image only if the upload was successful
+        setSelectedImage(null);
+
+        // 🔁 Re-fetch certificates to refresh the list
+        const response = await newRequest.get(`/mycerti/${userId}`);
+        setCertificates(response?.data);
+
+        alert("✅ Upload successful and list refreshed!");
       } else {
-        alert("Upload failed. Please try again."); // Display error if upload failed
+        alert("Upload failed. Please try again.");
       }
     } catch (error) {
+      console.error(error);
       alert("An error occurred. Please try again.");
     }
   };
@@ -96,7 +105,7 @@ export default function Certificates(props) {
 
       {/* Upload Certificate Section with Border */}
       <View style={styles.uploadSection}>
-        <Text style={styles.uploadHeaderText}>Upload Certificate(s)</Text>
+        <Text style={styles.uploadHeaderText}>Upload Certificatex(s)</Text>
         {selectedImage ? (
           <>
             <Image source={{ uri: selectedImage }} style={styles.image} />

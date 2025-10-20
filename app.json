@@ -2,7 +2,7 @@
   "expo": {
     "name": "npchurismobile",
     "slug": "npchurismobile",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.coinmac.npchuris",
-      "buildNumber": "1.0.17"
+      "buildNumber": "1.0.18"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +28,7 @@
         "android.permission.CAMERA"
       ],
       "package": "com.michofat.npchuris",
-      "versionCode": 17
+      "versionCode": 18
     },
     "web": {
       "favicon": "./assets/favicon.png"
