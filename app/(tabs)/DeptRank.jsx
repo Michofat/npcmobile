@@ -133,7 +133,7 @@ const DeptRank = () => {
   };
 
   const isFormValid = [station, postingLg, dept, rank].every(Boolean);
-  console.log("Department Data:", deptView);
+  // console.log("Department Data:", deptView);
 
   return (
     <ScrollView style={styles.scrollView}>

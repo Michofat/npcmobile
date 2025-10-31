@@ -74,7 +74,7 @@ const Preview = () => {
         {
           text: "Cancel",
           onPress: () => {
-            console.log("Reload canceled");
+            //  console.log("Reload canceled");
           },
           style: "cancel", // Adds emphasis to the cancel button
         },
@@ -249,7 +249,7 @@ const Preview = () => {
         </TouchableOpacity>
 
         <PreviewSection
-          icon="file1"
+          icon="file"
           data={
             <>
               <ProfileText title="Next of kin" value={nok} />

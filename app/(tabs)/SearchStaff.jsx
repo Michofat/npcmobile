@@ -25,7 +25,7 @@ const SearchStaff = ({ navigation }) => {
   const [error, setError] = useState(null);
 
   const handlenavigation = (email) => {
-    console.log("SENDING ID", email);
+    //  console.log("SENDING ID", email);
     // router.push("ViewProfile", { email });
     router.push({
       pathname: "ViewProfile",

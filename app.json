@@ -2,7 +2,7 @@
   "expo": {
     "name": "npchurismobile",
     "slug": "npchurismobile",
-    "version": "1.0.18",
+    "version": "1.0.20",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,9 +14,14 @@
     "scheme": "npchurismobile",
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.coinmac.npchuris",
-      "buildNumber": "1.0.18"
+      "buildNumber": "1.0.20",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to let you upload certificates and signatures.",
+        "NSCameraUsageDescription": "This app may use your camera for taking profile pictures.",
+        "NSPhotoLibraryAddUsageDescription": "This app needs access to save uploaded pictures."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +33,7 @@
         "android.permission.CAMERA"
       ],
       "package": "com.michofat.npchuris",
-      "versionCode": 18
+      "versionCode": 20
     },
     "web": {
       "favicon": "./assets/favicon.png"

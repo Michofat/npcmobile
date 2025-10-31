@@ -139,7 +139,7 @@ const LeaveApplication = () => {
   }));
 
   const isSubmitEnabled = valueloaname && datered && whereleave && nodays;
-  console.log(isSubmitEnabled, valueloaname, datered, whereleave, nodays);
+  // console.log(isSubmitEnabled, valueloaname, datered, whereleave, nodays);
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Fill the form below</Text>
@@ -161,7 +161,7 @@ const LeaveApplication = () => {
         useNativeAndroidPickerStyle={false}
         Icon={() => (
           <AntDesign
-            name="caretdown"
+            name="down"
             size={20}
             color={isFocus ? "green" : "black"}
           />

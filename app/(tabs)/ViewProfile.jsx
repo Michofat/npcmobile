@@ -22,7 +22,7 @@ export default function ViewProfile() {
 
   const [userdetails, setUserDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log("USERDETAILS", userdetails);
+  //console.log("USERDETAILS", userdetails);
   const getRecord = async () => {
     try {
       const response = await newRequest.get(`/myrecord3/${email}`);
@@ -173,7 +173,7 @@ export default function ViewProfile() {
               { title: "Occupation", value: spouseoccup },
               { title: "Office", value: spouseoffice },
             ])}
-            {renderInfoSection("file1", [
+            {renderInfoSection("file", [
               { title: "Next of kin", value: nok },
               { title: "Relationship", value: nokwho },
               { title: "Phone number", value: nokfon },

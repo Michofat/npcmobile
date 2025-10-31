@@ -150,7 +150,7 @@ const DrawerLayout = () => {
             drawerLabel: "Qualifications",
             headerTitle: "Qualifications",
             drawerIcon: ({ size, color }) => (
-              <AntDesign name="menufold" size={size} color={color} />
+              <AntDesign name="menu-fold" size={size} color={color} />
             ),
           }}
         />

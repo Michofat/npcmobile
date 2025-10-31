@@ -74,7 +74,7 @@ const Profile = () => {
         {
           text: "Cancel",
           onPress: () => {
-            console.log("Reload canceled");
+            // console.log("Reload canceled");
           },
           style: "cancel", // Adds emphasis to the cancel button
         },
@@ -209,7 +209,7 @@ const Profile = () => {
         />
 
         <ProfileSection
-          icon="file1"
+          icon="file"
           data={
             <>
               <ProfileText title="Next of kin" value={nok} />

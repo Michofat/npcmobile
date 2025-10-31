@@ -106,7 +106,7 @@ export const GlobalProvider = ({ children }) => {
 
       const response = await newRequest.get(`/myrecord2/${id}`);
       const newUserInfo = response.data;
-      console.log("NEWWWW", newUserInfo);
+      //console.log("NEWWWW", newUserInfo);
       setUserInfo(newUserInfo);
       await AsyncStorage.setItem("userInfo", JSON.stringify(newUserInfo));
 
@@ -201,7 +201,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       const id = userInfo[0]?.id;
       if (!id) throw new Error("User ID not found");
-      console.log("COMING DATES", dob);
+      //console.log("COMING DATES", dob);
       const response = await newRequest.put(`/updatedates/${id}`, dob);
 
       await updateDataInAsyncStorage(id);

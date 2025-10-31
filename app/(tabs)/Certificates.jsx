@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { GlobalContext } from "../../context/GlobalProvider";
 import * as ImagePicker from "expo-image-picker";
-import { ImageManipulator } from "expo-image-manipulator";
 import Constants from "expo-constants";
 import CertificateList from "../../components/CertificateList";
 import { newRequest } from "../../utils/newRequest";
@@ -52,7 +51,9 @@ export default function Certificates(props) {
 
   const handleImageSelect = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      // mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
+
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.2,
